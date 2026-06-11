@@ -1,0 +1,153 @@
+.fm-dashboard {
+  min-height: calc(100vh - var(--fm-navbar-h) - 120px);
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+  padding:    60px 24px;
+  background: var(--fm-bg);
+
+  // ── Card contenedor ──────────────────────────────────────────
+  &__card {
+    max-width:     580px;
+    width:         100%;
+    background:    var(--fm-white);
+    border:        1px solid var(--fm-border);
+    border-radius: var(--fm-radius-xl);
+    padding:       52px 44px;
+    text-align:    center;
+    box-shadow:    var(--fm-shadow-md);
+
+    @media (max-width: 600px) { padding: 36px 24px; }
+  }
+
+  // ── Badge de sprint ──────────────────────────────────────────
+  &__sprint-badge {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            6px;
+    background:     rgba(0, 150, 199, 0.08);
+    border:         1px solid rgba(0, 150, 199, 0.28);
+    color:          var(--fm-teal);
+    font-size:      0.72rem;
+    font-weight:    700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding:        5px 14px;
+    border-radius:  999px;
+    margin-bottom:  28px;
+
+    svg { width: 13px; height: 13px; }
+  }
+
+  // ── Icono central ─────────────────────────────────────────────
+  &__icon-wrap {
+    width:         72px;
+    height:        72px;
+    background:    var(--fm-gradient-subtle);
+    border:        1px solid var(--fm-border);
+    border-radius: var(--fm-radius);
+    display:       flex;
+    align-items:   center;
+    justify-content: center;
+    margin:        0 auto 24px;
+  }
+
+  &__icon {
+    width:  36px;
+    height: 36px;
+    color:  var(--fm-teal);
+  }
+
+  // ── Tipografía ───────────────────────────────────────────────
+  &__title {
+    font-size:      1.6rem;
+    font-weight:    700;
+    color:          var(--fm-navy);
+    letter-spacing: -0.025em;
+    margin-bottom:  14px;
+  }
+
+  &__desc {
+    font-size:   0.95rem;
+    color:       var(--fm-text-muted);
+    line-height: 1.7;
+    max-width:   440px;
+    margin:      0 auto 32px;
+
+    strong { color: var(--fm-navy); font-weight: 600; }
+  }
+
+  // ── Lista de características ──────────────────────────────────
+  &__features {
+    list-style: none;
+    text-align: left;
+    display:    flex;
+    flex-direction: column;
+    gap:        14px;
+    margin:     0 0 36px;
+    padding:    24px;
+    background: var(--fm-surface);
+    border:     1px solid var(--fm-border);
+    border-radius: var(--fm-radius);
+  }
+
+  &__feature {
+    display:     flex;
+    align-items: flex-start;
+    gap:         14px;
+    font-size:   0.875rem;
+    color:       var(--fm-text);
+    line-height: 1.5;
+
+    strong { display: block; color: var(--fm-navy); font-weight: 600; margin-bottom: 2px; }
+    small  { font-size: 0.78rem; color: var(--fm-text-muted); }
+  }
+
+  &__feature-dot {
+    flex-shrink:   0;
+    width:         8px;
+    height:        8px;
+    border-radius: 50%;
+    background:    var(--fm-gradient-card);
+    margin-top:    5px;
+  }
+
+  // ── Botones ───────────────────────────────────────────────────
+  &__actions {
+    display:   flex;
+    gap:       12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display:         inline-flex;
+    align-items:     center;
+    gap:             8px;
+    font-size:       0.875rem;
+    font-weight:     600;
+    padding:         11px 22px;
+    border-radius:   var(--fm-radius-sm);
+    text-decoration: none;
+    transition:      opacity 0.2s, transform 0.18s;
+    cursor:          pointer;
+
+    svg { width: 17px; height: 17px; }
+    &:hover { transform: translateY(-2px); }
+
+    &--primary {
+      background: var(--fm-gradient-card);
+      color:      #fff;
+      box-shadow: 0 4px 16px rgba(0, 180, 216, 0.30);
+      border:     none;
+      &:hover { opacity: 0.88; }
+    }
+
+    &--outline {
+      background:  transparent;
+      color:       var(--fm-navy);
+      border:      1.5px solid var(--fm-border);
+      &:hover { border-color: var(--fm-cyan); color: var(--fm-teal); }
+    }
+  }
+}

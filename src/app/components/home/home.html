@@ -1,0 +1,326 @@
+<!-- ══════════════════════════════════════════════════════
+     HOME — Landing Page (MVP)
+     Maquetación modular por secciones independientes:
+       Hero (fm-hero) → Beneficios (fm-benefits / fm-benefit-card) → CTA (fm-cta-banner)
+     Metodología BEM (Bloque__Elemento--Modificador) en cada bloque.
+     Iconografía 100% SVG inline (sin librerías externas de iconos).
+════════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════════════════ -->
+<section class="fm-hero" aria-label="Bienvenida FocusMind">
+
+  <!-- Orbes decorativos de fondo -->
+  <div class="fm-hero__orb fm-hero__orb--1" aria-hidden="true"></div>
+  <div class="fm-hero__orb fm-hero__orb--2" aria-hidden="true"></div>
+  <div class="fm-hero__orb fm-hero__orb--3" aria-hidden="true"></div>
+
+  <div class="fm-hero__content">
+
+    <!-- Badge de confianza -->
+    <div class="fm-hero__badge" role="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+      Productos con Registro Sanitario DIGESA/DIGEMID
+    </div>
+
+    <!-- Título principal -->
+    <h1 class="fm-hero__title">
+      Desbloquea tu<br />
+      <span class="fm-hero__title--gradient">Máximo Potencial</span><br />
+      Cognitivo
+    </h1>
+
+    <!-- Subtítulo -->
+    <p class="fm-hero__subtitle">
+      Nootrópicos y suplementos premium formulados con evidencia científica para
+      el mercado peruano. Transparencia sanitaria total en cada producto.
+    </p>
+
+    <!-- Botones de acción -->
+    <div class="fm-hero__actions">
+      <a
+        class="fm-btn fm-btn--primary"
+        routerLink="/quiz"
+        aria-label="Ir al quiz de diagnóstico cognitivo"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+        </svg>
+        Realizar Test Cognitivo
+      </a>
+
+      <a
+        class="fm-btn fm-btn--outline"
+        routerLink="/catalogo"
+        aria-label="Ver catálogo de productos"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16.5 9.4 7.55 4.24"/>
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+          <path d="m3.3 7 8.7 5 8.7-5"/>
+          <path d="M12 22V12"/>
+        </svg>
+        Ver Catálogo
+      </a>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="fm-hero__trust" role="list" aria-label="Sellos de confianza">
+      <div class="fm-hero__trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/>
+          <path d="M6.453 15h11.094"/>
+          <path d="M8.5 2h7"/>
+        </svg>
+        <span>Respaldo Científico</span>
+      </div>
+      <div class="fm-hero__trust-divider" aria-hidden="true"></div>
+      <div class="fm-hero__trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>DIGESA Certificado</span>
+      </div>
+      <div class="fm-hero__trust-divider" aria-hidden="true"></div>
+      <div class="fm-hero__trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+        <span>100% Natural</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECCIÓN DE BENEFICIOS
+════════════════════════════════════════════════════════ -->
+<section class="fm-benefits" aria-labelledby="benefits-title">
+  <div class="fm-benefits__container">
+
+    <!-- Encabezado de sección -->
+    <header class="fm-benefits__header">
+      <span class="fm-section-label">¿Por qué FocusMind?</span>
+      <h2 id="benefits-title" class="fm-benefits__title">
+        Tres pilares que nos distinguen
+      </h2>
+      <p class="fm-benefits__subtitle">
+        Cada producto de nuestro catálogo es seleccionado bajo criterios
+        científicos y normativos peruanos rigurosos.
+      </p>
+    </header>
+
+    <!-- Grid de tarjetas -->
+    <div class="fm-benefits__grid" role="list">
+
+      <!-- Tarjeta 1 — Respaldo Científico -->
+      <article class="fm-benefit-card" role="listitem">
+        <div class="fm-benefit-card__content">
+          <div class="fm-benefit-card__icon-wrap fm-benefit-card__icon-wrap--science">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/>
+              <path d="M6.453 15h11.094"/>
+              <path d="M8.5 2h7"/>
+            </svg>
+          </div>
+          <h3 class="fm-benefit-card__title">Fórmulas con Respaldo Científico</h3>
+          <p class="fm-benefit-card__desc">
+            Cada compuesto activo en nuestro catálogo está respaldado por estudios
+            publicados en revistas indexadas (PubMed, Cochrane). Indicamos
+            la dosis efectiva mínima (MED) y máxima segura por producto.
+          </p>
+          <ul class="fm-benefit-card__list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Dosis validadas clínicamente
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Biodisponibilidad documentada
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Fichas técnicas completas
+            </li>
+          </ul>
+          <a class="fm-benefit-card__link" routerLink="/catalogo">
+            Explorar productos
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 2 — Transparencia DIGESA (card destacada) -->
+      <article class="fm-benefit-card fm-benefit-card--featured" role="listitem">
+        <!-- Badge de featured -->
+        <div class="fm-benefit-card__badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          Diferencial ABET 2
+        </div>
+        <div class="fm-benefit-card__content">
+          <div class="fm-benefit-card__icon-wrap fm-benefit-card__icon-wrap--digesa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <h3 class="fm-benefit-card__title">Transparencia Sanitaria DIGESA</h3>
+          <p class="fm-benefit-card__desc">
+            Cada producto muestra su Número de Registro Sanitario DIGESA/DIGEMID
+            verificable, tabla de alérgenos, contraindicaciones y aviso médico
+            conforme al D.S. N.° 007-98-SA.
+          </p>
+          <ul class="fm-benefit-card__list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Nro. de Registro visible en ficha
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Alerta de alérgenos (Codex)
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Aviso legal de consulta médica
+            </li>
+          </ul>
+          <a class="fm-benefit-card__link" routerLink="/catalogo">
+            Ver registros sanitarios
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 3 — Quiz Cognitivo -->
+      <article class="fm-benefit-card" role="listitem">
+        <div class="fm-benefit-card__content">
+          <div class="fm-benefit-card__icon-wrap fm-benefit-card__icon-wrap--quiz">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+              <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+            </svg>
+          </div>
+          <h3 class="fm-benefit-card__title">Optimización Cognitiva Personalizada</h3>
+          <p class="fm-benefit-card__desc">
+            Nuestro Quiz de Diagnóstico Cognitivo evalúa tu perfil de estrés,
+            calidad de sueño y objetivos mentales para recomendarte los
+            suplementos más adecuados a tu caso específico.
+          </p>
+          <ul class="fm-benefit-card__list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Diagnóstico en 3 pasos
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Recomendación personalizada
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              Considera alergias y condiciones
+            </li>
+          </ul>
+          <a class="fm-benefit-card__link fm-benefit-card__link--cta" routerLink="/quiz">
+            Iniciar diagnóstico
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     BANNER CTA FINAL
+════════════════════════════════════════════════════════ -->
+<section class="fm-cta-banner" aria-label="Llamada a la acción">
+  <div class="fm-cta-banner__content">
+    <h2 class="fm-cta-banner__title">
+      ¿Listo para optimizar tu rendimiento mental?
+    </h2>
+    <p class="fm-cta-banner__sub">
+      Completa nuestro quiz en menos de 3 minutos y obtén tu plan personalizado.
+    </p>
+    <a
+      class="fm-btn fm-btn--white"
+      routerLink="/quiz"
+      aria-label="Ir al quiz cognitivo"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+      </svg>
+      Comenzar Quiz Ahora
+    </a>
+  </div>
+</section>

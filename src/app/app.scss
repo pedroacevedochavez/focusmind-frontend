@@ -1,0 +1,574 @@
+// ══════════════════════════════════════════════════════════════════
+//  FocusMind S.A.C. — app.scss
+//  Estilos del componente raíz | BEM 
+//
+//  NOTA: Los resets globales (*, html, body) y @font-face deben
+//  vivir en src/styles.scss. Este archivo gestiona los tokens de
+//  diseño (:root) y todos los bloques BEM del layout estructural:
+//  Navbar, Page Wrapper y Footer.
+// ══════════════════════════════════════════════════════════════════
+
+
+// ════════════════════════════════════════════════════════════════
+//  0. DESIGN TOKENS — CSS Custom Properties
+//     :root no recibe encapsulación de Angular → son globales
+// ════════════════════════════════════════════════════════════════
+:root {
+
+  // ── Paleta primaria azul–cian ──────────────────────────────────
+  --fm-navy:          #0A2540;   // Azul marino profundo
+  --fm-blue-deep:     #023E8A;   // Azul institucional oscuro
+  --fm-blue:          #0077B6;   // Azul océano
+  --fm-teal:          #0096C7;   // Cian–teal medio
+  --fm-cyan:          #00B4D8;   // Cian primario de marca
+  --fm-cyan-light:    #90E0EF;   // Cian claro (texto sobre oscuro)
+  --fm-cyan-pale:     #CAF0F8;   // Cian pálido (fondos)
+
+  // ── Acento verde–cian (estética científica) ────────────────────
+  --fm-green-teal:    #0A9396;
+  --fm-green-light:   #94D2BD;
+
+  // ── Degradados corporativos ────────────────────────────────────
+  --fm-gradient-hero:
+    linear-gradient(135deg, #0A2540 0%, #023E8A 40%, #0096C7 75%, #00B4D8 100%);
+  --fm-gradient-card:
+    linear-gradient(135deg, #0077B6 0%, #00B4D8 100%);
+  --fm-gradient-subtle:
+    linear-gradient(135deg, #E6F4FA 0%, #CAF0F8 100%);
+
+  // ── Superficies y fondos ───────────────────────────────────────
+  --fm-surface:       #F0F7FF;
+  --fm-surface-alt:   #E6F4FA;
+  --fm-bg:            #F8FAFD;
+  --fm-white:         #FFFFFF;
+
+  // ── Tipografía ────────────────────────────────────────────────
+  --fm-text:          #0A2540;
+  --fm-text-muted:    #4A7090;
+  --fm-text-light:    #FFFFFF;
+  --fm-font:          'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  // ── Bordes, sombras y radios ───────────────────────────────────
+  --fm-border:        rgba(0, 180, 216, 0.22);
+  --fm-shadow-sm:     0 2px 12px rgba(0, 119, 182, 0.10);
+  --fm-shadow-md:     0 6px 28px rgba(0, 119, 182, 0.16);
+  --fm-shadow-lg:     0 12px 48px rgba(0, 119, 182, 0.20);
+  --fm-radius:        12px;
+  --fm-radius-sm:     8px;
+  --fm-radius-xl:     20px;
+
+  // ── Layout ────────────────────────────────────────────────────
+  --fm-navbar-h:      66px;
+  --fm-max-w:         1280px;
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  1. NAVBAR
+// ════════════════════════════════════════════════════════════════
+.fm-navbar {
+  position:           fixed;
+  top:                0;
+  left:               0;
+  right:              0;
+  z-index:            1000;
+  height:             var(--fm-navbar-h);
+  background:         rgba(10, 37, 64, 0.97);
+  backdrop-filter:    blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom:      1px solid rgba(0, 180, 216, 0.20);
+  box-shadow:         0 2px 20px rgba(0, 0, 0, 0.25);
+  font-family:        var(--fm-font);
+
+  // ── Contenedor interno ──────────────────────────────────────────
+  &__container {
+    display:          flex;
+    align-items:      center;
+    justify-content:  space-between;
+    gap:              12px;
+    max-width:        var(--fm-max-w);
+    margin:           0 auto;
+    padding:          0 28px;
+    height:           100%;
+
+    @media (max-width: 600px) { padding: 0 16px; }
+  }
+
+  // ── Marca / Brand ───────────────────────────────────────────────
+  &__brand {
+    display:          flex;
+    align-items:      center;
+    gap:              10px;
+    text-decoration:  none;
+    flex-shrink:      0;
+    user-select:      none;
+  }
+
+  &__logo {
+    height:           38px;
+    width:            auto;
+    object-fit:       contain;
+    display:          block;
+  }
+
+  &__brand-name {
+    font-size:        1.3rem;
+    font-weight:      700;
+    color:            #fff;
+    letter-spacing:   -0.03em;
+    line-height:      1;
+    white-space:      nowrap;
+  }
+
+  &__brand-accent {
+    color:            var(--fm-cyan);
+  }
+
+  // ── Contenedor de navegación desktop ───────────────────────────
+  &__nav {
+    display:          flex;
+    align-items:      center;
+    gap:              4px;
+    flex:             1;
+    justify-content:  flex-end;
+
+    @media (max-width: 860px) { display: none; }
+  }
+
+  // ── Icono SVG base ──────────────────────────────────────────────
+  &__icon {
+    width:            18px;
+    height:           18px;
+    flex-shrink:      0;
+    display:          block;
+    transition:       transform 0.20s ease;
+    pointer-events:   none;
+  }
+
+  // ── Links de navegación regulares ──────────────────────────────
+  &__link {
+    display:          flex;
+    align-items:      center;
+    gap:              7px;
+    color:            rgba(255, 255, 255, 0.75);
+    font-size:        0.875rem;
+    font-weight:      500;
+    font-family:      var(--fm-font);
+    text-decoration:  none;
+    padding:          8px 14px;
+    border-radius:    var(--fm-radius-sm);
+    border:           1px solid transparent;
+    transition:       color 0.20s, background 0.20s, border-color 0.20s;
+    white-space:      nowrap;
+    cursor:           pointer;
+
+    &:hover {
+      color:          #fff;
+      background:     rgba(0, 180, 216, 0.14);
+
+      .fm-navbar__icon { transform: scale(1.10); }
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--fm-cyan);
+      outline-offset: 2px;
+    }
+
+    &--active {
+      color:          var(--fm-cyan) !important;
+      background:     rgba(0, 180, 216, 0.12) !important;
+    }
+  }
+
+  // ── CTA "Quiz Cognitivo" ────────────────────────────────────────
+  &__cta {
+    display:          flex;
+    align-items:      center;
+    gap:              7px;
+    background:       linear-gradient(135deg, #0077B6, #00B4D8);
+    color:            #fff;
+    font-size:        0.875rem;
+    font-weight:      600;
+    font-family:      var(--fm-font);
+    text-decoration:  none;
+    padding:          9px 18px;
+    border-radius:    var(--fm-radius-sm);
+    border:           1px solid transparent;
+    white-space:      nowrap;
+    cursor:           pointer;
+    transition:       opacity 0.20s, transform 0.18s, box-shadow 0.20s;
+
+    .fm-navbar__icon { transition: transform 0.20s; }
+
+    &:hover {
+      opacity:        0.88;
+      transform:      translateY(-1px);
+      box-shadow:     0 4px 16px rgba(0, 180, 216, 0.35);
+
+      .fm-navbar__icon { transform: scale(1.10); }
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--fm-cyan-light);
+      outline-offset: 2px;
+    }
+
+    &--active {
+      box-shadow:     0 0 0 2px rgba(144, 224, 239, 0.50);
+    }
+  }
+
+  // ── Separador vertical ──────────────────────────────────────────
+  &__sep {
+    width:            1px;
+    height:           22px;
+    background:       rgba(0, 180, 216, 0.25);
+    flex-shrink:      0;
+    margin:           0 6px;
+  }
+
+  // ── Enlace "Acceso" / Login ────────────────────────────────────
+  &__login {
+    display:          flex;
+    align-items:      center;
+    gap:              7px;
+    color:            rgba(144, 224, 239, 0.85);
+    font-size:        0.875rem;
+    font-weight:      500;
+    font-family:      var(--fm-font);
+    text-decoration:  none;
+    padding:          8px 14px;
+    border:           1px solid rgba(0, 180, 216, 0.30);
+    border-radius:    var(--fm-radius-sm);
+    white-space:      nowrap;
+    cursor:           pointer;
+    transition:       color 0.20s, border-color 0.20s, background 0.20s;
+
+    .fm-navbar__icon { transition: transform 0.20s; }
+
+    &:hover {
+      color:          #fff;
+      border-color:   rgba(0, 180, 216, 0.70);
+      background:     rgba(0, 180, 216, 0.10);
+
+      .fm-navbar__icon { transform: scale(1.10); }
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--fm-cyan);
+      outline-offset: 2px;
+    }
+
+    &--active {
+      color:          var(--fm-cyan) !important;
+      border-color:   var(--fm-cyan) !important;
+      background:     rgba(0, 180, 216, 0.12) !important;
+    }
+  }
+
+  // ── Botón hamburguesa (sólo móvil) ─────────────────────────────
+  &__menu-btn {
+    display:          none;
+    align-items:      center;
+    justify-content:  center;
+    width:            40px;
+    height:           40px;
+    padding:          0;
+    background:       transparent;
+    border:           1px solid rgba(0, 180, 216, 0.25);
+    border-radius:    var(--fm-radius-sm);
+    color:            rgba(255, 255, 255, 0.82);
+    cursor:           pointer;
+    flex-shrink:      0;
+    transition:       border-color 0.20s, background 0.20s, color 0.20s;
+
+    svg {
+      width:          20px;
+      height:         20px;
+      display:        block;
+      pointer-events: none;
+    }
+
+    &:hover {
+      border-color:   var(--fm-cyan);
+      background:     rgba(0, 180, 216, 0.10);
+      color:          #fff;
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--fm-cyan);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 860px) { display: flex; }
+  }
+
+  // ── Menú desplegable móvil ──────────────────────────────────────
+  &__mobile {
+    background:       rgba(10, 37, 64, 0.99);
+    border-top:       1px solid rgba(0, 180, 216, 0.15);
+    padding:          8px 0 20px;
+    animation:        fm-slide-down 0.20s ease;
+  }
+
+  &__mobile-link {
+    display:          flex;
+    align-items:      center;
+    gap:              12px;
+    padding:          13px 28px;
+    color:            rgba(255, 255, 255, 0.78);
+    text-decoration:  none;
+    font-weight:      500;
+    font-size:        0.95rem;
+    font-family:      var(--fm-font);
+    transition:       background 0.20s, color 0.20s;
+
+    svg {
+      width:          18px;
+      height:         18px;
+      flex-shrink:    0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background:     rgba(0, 180, 216, 0.10);
+      color:          #fff;
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--fm-cyan);
+      outline-offset: -2px;
+    }
+
+    &--active {
+      color:          var(--fm-cyan) !important;
+      background:     rgba(0, 180, 216, 0.08);
+    }
+
+    &--cta {
+      color:          var(--fm-cyan);
+      font-weight:    600;
+    }
+
+    &--login {
+      color:          rgba(144, 224, 239, 0.80);
+    }
+  }
+
+  &__mobile-sep {
+    height:           1px;
+    background:       rgba(0, 180, 216, 0.12);
+    margin:           8px 28px;
+  }
+
+  // ── Responsive: navbar en modo móvil ───────────────────────────
+  @media (max-width: 860px) {
+    height:           auto;
+    min-height:       var(--fm-navbar-h);
+
+    &__container {
+      flex-wrap:      wrap;
+      min-height:     var(--fm-navbar-h);
+      align-items:    center;
+    }
+  }
+}
+
+// ── Animación de entrada del menú móvil ────────────────────────────
+@keyframes fm-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  2. PAGE WRAPPER — envuelve router-outlet + footer
+// ════════════════════════════════════════════════════════════════
+.fm-page-wrapper {
+  padding-top:      var(--fm-navbar-h);
+  min-height:       100vh;
+  display:          flex;
+  flex-direction:   column;
+  background:       var(--fm-bg);
+}
+
+.fm-main {
+  flex:             1;
+  width:            100%;
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  3. FOOTER
+// ════════════════════════════════════════════════════════════════
+.fm-footer {
+  background:       var(--fm-navy);
+  color:            var(--fm-cyan-pale);
+  font-family:      var(--fm-font);
+  margin-top:       auto;
+
+  // ── Grid de columnas ───────────────────────────────────────────
+  &__container {
+    display:        grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap:            40px;
+    max-width:      var(--fm-max-w);
+    margin:         0 auto;
+    padding:        52px 28px 40px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap:          28px;
+      padding:      40px 24px 32px;
+    }
+
+    @media (max-width: 600px) {
+      padding:      32px 20px 24px;
+    }
+  }
+
+  // ── Columna brand ──────────────────────────────────────────────
+  &__col--brand {
+    padding-right:  20px;
+
+    @media (max-width: 900px) { padding-right: 0; }
+  }
+
+  &__logo {
+    height:         40px;
+    width:          auto;
+    opacity:        0.92;
+    filter:         brightness(1.10);
+    margin-bottom:  14px;
+    display:        block;
+    transition:     opacity 0.20s;
+
+    &:hover { opacity: 1; }
+  }
+
+  &__tagline {
+    font-size:      0.875rem;
+    color:          var(--fm-cyan-light);
+    line-height:    1.65;
+    margin-bottom:  8px;
+  }
+
+  &__ruc {
+    font-size:      0.78rem;
+    color:          rgba(144, 224, 239, 0.50);
+    margin-bottom:  20px;
+    letter-spacing: 0.01em;
+  }
+
+  // ── Redes sociales ─────────────────────────────────────────────
+  &__social {
+    display:        flex;
+    gap:            10px;
+    align-items:    center;
+    flex-wrap:      wrap;
+  }
+
+  &__social-link {
+    display:        flex;
+    align-items:    center;
+    justify-content: center;
+    width:          36px;
+    height:         36px;
+    border-radius:  50%;
+    background:     rgba(0, 180, 216, 0.10);
+    border:         1px solid rgba(0, 180, 216, 0.22);
+    color:          rgba(144, 224, 239, 0.65);
+    text-decoration: none;
+    flex-shrink:    0;
+    transition:     background 0.20s, color 0.20s, border-color 0.20s, transform 0.20s;
+
+    svg {
+      width:        16px;
+      height:       16px;
+      display:      block;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background:   rgba(0, 180, 216, 0.22);
+      border-color: var(--fm-cyan);
+      color:        var(--fm-cyan);
+      transform:    translateY(-2px);
+    }
+
+    &:focus-visible {
+      outline:      2px solid var(--fm-cyan);
+      outline-offset: 2px;
+    }
+  }
+
+  // ── Headings de columna ────────────────────────────────────────
+  &__heading {
+    display:        flex;
+    align-items:    center;
+    gap:            7px;
+    font-size:      0.78rem;
+    font-weight:    700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color:          var(--fm-cyan);
+    margin-bottom:  14px;
+    line-height:    1;
+  }
+
+  &__heading-icon {
+    width:          16px;
+    height:         16px;
+    flex-shrink:    0;
+    pointer-events: none;
+  }
+
+  // ── Listas de información ──────────────────────────────────────
+  &__list {
+    list-style:     none;
+    padding:        0;
+    margin:         0;
+    display:        flex;
+    flex-direction: column;
+    gap:            10px;
+
+    li {
+      font-size:    0.82rem;
+      color:        rgba(202, 240, 248, 0.68);
+      line-height:  1.58;
+      padding-left: 12px;
+      border-left:  2px solid rgba(0, 180, 216, 0.28);
+      transition:   border-color 0.20s, color 0.20s;
+
+      &:hover {
+        color:        rgba(202, 240, 248, 0.90);
+        border-color: rgba(0, 180, 216, 0.55);
+      }
+    }
+  }
+
+  // ── Barra inferior ─────────────────────────────────────────────
+  &__bottom {
+    border-top:     1px solid rgba(0, 180, 216, 0.14);
+    max-width:      var(--fm-max-w);
+    margin:         0 auto;
+    padding:        20px 28px;
+    display:        flex;
+    flex-direction: column;
+    gap:            6px;
+
+    @media (max-width: 600px) { padding: 16px 20px; }
+
+    p {
+      font-size:    0.78rem;
+      color:        rgba(144, 224, 239, 0.45);
+      line-height:  1.55;
+      margin:       0;
+    }
+  }
+
+  &__disclaimer {
+    font-style:     italic;
+    opacity:        0.80;
+  }
+}

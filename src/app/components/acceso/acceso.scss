@@ -1,0 +1,464 @@
+// ══════════════════════════════════════════════════════════════════
+//  FocusMind S.A.C. — acceso.scss
+//  Estilos del módulo de Autenticación | BEM 
+//  Usa CSS Custom Properties definidas en :root (app.scss)
+// ══════════════════════════════════════════════════════════════════
+
+
+// ════════════════════════════════════════════════════════════════
+//  1. PÁGINA CONTENEDORA — .fm-acceso
+// ════════════════════════════════════════════════════════════════
+.fm-acceso {
+  position:         relative;
+  min-height:       calc(100vh - var(--fm-navbar-h));
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  padding:          48px 24px;
+  background:       var(--fm-gradient-hero);
+  overflow:         hidden;
+  font-family:      var(--fm-font);
+
+  // ── Orbes decorativos de fondo ────────────────────────────────
+  &__orb {
+    position:       absolute;
+    border-radius:  50%;
+    pointer-events: none;
+    filter:         blur(70px);
+    opacity:        0.18;
+  }
+
+  &__orb--1 {
+    width:          500px;
+    height:         500px;
+    background:     radial-gradient(circle, #00B4D8, transparent 70%);
+    top:            -140px;
+    right:          -80px;
+    animation:      fm-orb-pulse 8s ease-in-out infinite;
+  }
+
+  &__orb--2 {
+    width:          380px;
+    height:         380px;
+    background:     radial-gradient(circle, #0A9396, transparent 70%);
+    bottom:         -100px;
+    left:           -60px;
+    animation:      fm-orb-pulse 10s ease-in-out infinite reverse;
+  }
+
+  &__orb--3 {
+    width:          200px;
+    height:         200px;
+    background:     radial-gradient(circle, #90E0EF, transparent 70%);
+    top:            40%;
+    left:           10%;
+    animation:      fm-orb-pulse 6s ease-in-out infinite 2s;
+  }
+}
+
+// Animación sutil de los orbes
+@keyframes fm-orb-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.18; }
+  50%       { transform: scale(1.08); opacity: 0.24; }
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  2. TARJETA DE LOGIN — .fm-login-card
+// ════════════════════════════════════════════════════════════════
+.fm-login-card {
+  position:         relative;
+  z-index:          2;
+  width:            100%;
+  max-width:        460px;
+  background:       var(--fm-white);
+  border-radius:    var(--fm-radius-xl);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.28),
+    0 4px 20px rgba(0, 119, 182, 0.18);
+  overflow:         hidden;
+  animation:        fm-card-enter 0.40s cubic-bezier(0.34, 1.36, 0.64, 1);
+
+  // ── Barra de acento superior ─────────────────────────────────
+  &__accent-bar {
+    height:         5px;
+    background:     var(--fm-gradient-card);
+  }
+
+  // ── Contenedor interior ───────────────────────────────────────
+  &__inner {
+    padding:        40px 40px 32px;
+
+    @media (max-width: 480px) { padding: 32px 24px 28px; }
+  }
+
+  // ── Cabecera: logo + nombre ───────────────────────────────────
+  &__header {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    text-align:     center;
+    margin-bottom:  24px;
+  }
+
+  &__brand-link {
+    display:        flex;
+    align-items:    center;
+    gap:            10px;
+    text-decoration: none;
+    margin-bottom:  18px;
+    transition:     opacity 0.20s;
+
+    &:hover { opacity: 0.85; }
+  }
+
+  &__logo {
+    width:          48px;
+    height:         48px;
+    object-fit:     contain;
+    display:        block;
+    filter:         drop-shadow(0 2px 8px rgba(0, 119, 182, 0.25));
+  }
+
+  &__brand-name {
+    font-size:      1.45rem;
+    font-weight:    700;
+    color:          var(--fm-navy);
+    letter-spacing: -0.03em;
+    line-height:    1;
+  }
+
+  &__brand-accent {
+    color:          var(--fm-cyan);
+  }
+
+  &__title {
+    font-size:      1.5rem;
+    font-weight:    700;
+    color:          var(--fm-navy);
+    letter-spacing: -0.025em;
+    margin:         0 0 6px;
+    line-height:    1.2;
+  }
+
+  &__subtitle {
+    font-size:      0.875rem;
+    color:          var(--fm-text-muted);
+    margin:         0;
+    line-height:    1.5;
+  }
+
+  // ── Formulario ────────────────────────────────────────────────
+  &__form {
+    display:        flex;
+    flex-direction: column;
+    gap:            18px;
+    margin-bottom:  28px;
+  }
+
+  // ── Campo individual ─────────────────────────────────────────
+  &__field {
+    display:        flex;
+    flex-direction: column;
+    gap:            6px;
+  }
+
+  &__label {
+    display:        flex;
+    align-items:    center;
+    gap:            6px;
+    font-size:      0.8rem;
+    font-weight:    600;
+    color:          var(--fm-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    user-select:    none;
+  }
+
+  &__field-icon {
+    width:          14px;
+    height:         14px;
+    flex-shrink:    0;
+    color:          var(--fm-teal);
+  }
+
+  // ── Envoltorio del input (permite posicionar íconos) ──────────
+  &__input-wrap {
+    position:       relative;
+    display:        flex;
+    align-items:    center;
+  }
+
+  // ── Input base ────────────────────────────────────────────────
+  &__input {
+    width:          100%;
+    height:         50px;
+    padding:        0 44px 0 16px;
+    font-size:      0.9375rem;
+    font-family:    var(--fm-font);
+    color:          var(--fm-text);
+    background:     var(--fm-surface);
+    border:         1.5px solid var(--fm-border);
+    border-radius:  var(--fm-radius-sm);
+    outline:        none;
+    transition:     border-color 0.20s, box-shadow 0.20s, background 0.20s;
+    box-sizing:     border-box;
+
+    &::placeholder {
+      color:        rgba(74, 112, 144, 0.50);
+      font-style:   italic;
+    }
+
+    &:focus {
+      border-color: var(--fm-cyan);
+      box-shadow:   0 0 0 3px rgba(0, 180, 216, 0.14);
+      background:   var(--fm-white);
+    }
+
+    // ── Variante deshabilitada (estado dummy Sprint 2) ────────
+    &--disabled {
+      background:   var(--fm-surface-alt);
+      color:        rgba(74, 112, 144, 0.55);
+      cursor:       not-allowed;
+      border-color: rgba(0, 180, 216, 0.14);
+
+      &::placeholder { color: rgba(74, 112, 144, 0.35); }
+      &:focus         { box-shadow: none; border-color: rgba(0, 180, 216, 0.14); }
+    }
+  }
+
+  // Icono de candado superpuesto (input email)
+  &__input-lock {
+    position:       absolute;
+    right:          14px;
+    display:        flex;
+    align-items:    center;
+    pointer-events: none;
+
+    svg {
+      width:        16px;
+      height:       16px;
+      color:        rgba(0, 180, 216, 0.35);
+    }
+  }
+
+  // Botón toggle de contraseña
+  &__toggle-pwd {
+    position:       absolute;
+    right:          10px;
+    display:        flex;
+    align-items:    center;
+    justify-content: center;
+    width:          32px;
+    height:         32px;
+    padding:        0;
+    background:     transparent;
+    border:         none;
+    cursor:         pointer;
+    color:          var(--fm-text-muted);
+    border-radius:  var(--fm-radius-sm);
+    transition:     color 0.20s;
+
+    svg { width: 17px; height: 17px; display: block; }
+
+    &:hover { color: var(--fm-teal); }
+    &:disabled { cursor: not-allowed; opacity: 0.40; }
+  }
+
+  // Link "Olvidaste contraseña"
+  &__forgot {
+    font-size:      0.78rem;
+    color:          var(--fm-blue);
+    text-decoration: none;
+    text-align:     right;
+    transition:     color 0.20s;
+
+    &:hover { color: var(--fm-teal); text-decoration: underline; }
+    &[aria-disabled="true"] {
+      color:        var(--fm-text-muted);
+      pointer-events: none;
+      cursor:       not-allowed;
+    }
+  }
+
+  // ── Botón "Ingresar" ──────────────────────────────────────────
+  &__btn {
+    display:        flex;
+    align-items:    center;
+    justify-content: center;
+    gap:            10px;
+    width:          100%;
+    height:         52px;
+    padding:        0 24px;
+    font-size:      0.9375rem;
+    font-weight:    600;
+    font-family:    var(--fm-font);
+    color:          #fff;
+    background:     var(--fm-gradient-card);
+    border:         none;
+    border-radius:  var(--fm-radius-sm);
+    cursor:         pointer;
+    transition:     opacity 0.20s, transform 0.18s, box-shadow 0.20s;
+    letter-spacing: 0.01em;
+    margin-top:     4px;
+
+    &:hover:not(:disabled) {
+      opacity:      0.88;
+      transform:    translateY(-1px);
+      box-shadow:   0 6px 20px rgba(0, 180, 216, 0.38);
+    }
+
+    &:active:not(:disabled) { transform: translateY(0); }
+
+    &:focus-visible {
+      outline:      2px solid var(--fm-cyan);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity:      0.45;
+      cursor:       not-allowed;
+      transform:    none;
+    }
+  }
+
+  &__btn-icon {
+    width:          19px;
+    height:         19px;
+    flex-shrink:    0;
+    pointer-events: none;
+  }
+
+  // ── Link de registro ──────────────────────────────────────────
+  &__register-cta {
+    font-size:      0.82rem;
+    color:          var(--fm-text-muted);
+    text-align:     center;
+    margin:         0;
+    line-height:    1.5;
+  }
+
+  &__register-link {
+    color:          var(--fm-blue);
+    font-weight:    600;
+    text-decoration: none;
+    transition:     color 0.20s;
+
+    &:hover { color: var(--fm-teal); text-decoration: underline; }
+  }
+}
+
+// Animación de entrada de la tarjeta
+@keyframes fm-card-enter {
+  from {
+    opacity:   0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  3. BADGE DE SPRINT — .fm-sprint-badge
+// ════════════════════════════════════════════════════════════════
+.fm-sprint-badge {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  background:     rgba(0, 150, 199, 0.08);
+  border:         1px solid rgba(0, 150, 199, 0.28);
+  color:          var(--fm-teal);
+  font-size:      0.72rem;
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding:        5px 14px;
+  border-radius:  999px;
+  margin:         0 auto 24px;
+  display:        flex;
+
+  &__icon {
+    width:        13px;
+    height:       13px;
+    flex-shrink:  0;
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════
+//  4. BANNER INFORMATIVO DE SPRINT — .fm-sprint-info
+// ════════════════════════════════════════════════════════════════
+.fm-sprint-info {
+  background:     var(--fm-surface);
+  border:         1px solid var(--fm-border);
+  border-left:    3px solid var(--fm-cyan);
+  border-radius:  var(--fm-radius-sm);
+  padding:        18px 20px;
+  margin-top:     4px;
+
+  // ── Cabecera del banner ───────────────────────────────────────
+  &__header {
+    display:        flex;
+    align-items:    flex-start;
+    gap:            9px;
+    margin-bottom:  10px;
+
+    strong {
+      font-size:    0.82rem;
+      font-weight:  700;
+      color:        var(--fm-navy);
+      line-height:  1.4;
+    }
+  }
+
+  &__header-icon {
+    width:          16px;
+    height:         16px;
+    flex-shrink:    0;
+    color:          var(--fm-teal);
+    margin-top:     1px;
+  }
+
+  // ── Cuerpo del banner ─────────────────────────────────────────
+  &__body {
+    font-size:      0.80rem;
+    color:          var(--fm-text-muted);
+    line-height:    1.65;
+    margin:         0 0 12px;
+
+    strong {
+      color:        var(--fm-navy);
+      font-weight:  600;
+    }
+  }
+
+  // ── Lista de funcionalidades previstas ────────────────────────
+  &__list {
+    list-style:     none;
+    padding:        0;
+    margin:         0;
+    display:        flex;
+    flex-direction: column;
+    gap:            7px;
+
+    li {
+      display:      flex;
+      align-items:  center;
+      gap:          10px;
+      font-size:    0.78rem;
+      color:        var(--fm-text-muted);
+      line-height:  1.45;
+    }
+  }
+
+  &__dot {
+    flex-shrink:    0;
+    width:          7px;
+    height:         7px;
+    border-radius:  50%;
+    background:     var(--fm-gradient-card);
+  }
+}
