@@ -1,0 +1,234 @@
+<section class="fm-catalogo" aria-labelledby="catalogo-titulo">
+  <div class="fm-catalogo__container">
+
+    <!-- Encabezado -->
+    <header class="fm-catalogo__header">
+      <span class="fm-section-label">Catálogo FocusMind</span>
+      <h1 id="catalogo-titulo" class="fm-catalogo__title">
+        Nootrópicos y Suplementos Cognitivos
+      </h1>
+      <p class="fm-catalogo__subtitle">
+        Explora nuestra selección de productos respaldados por evidencia
+        científica. Cada ficha indica su Registro Sanitario DIGESA/DIGEMID.
+      </p>
+      <p class="fm-catalogo__contador" role="status" aria-live="polite">
+        {{ productosFiltrados.length }} de {{ productos.length }} productos
+      </p>
+    </header>
+
+    <div class="fm-catalogo__layout">
+
+      <!-- ══════════════════════════════════════════════════
+           PANEL DE FILTROS (US-03 / US-04)
+      ══════════════════════════════════════════════════════ -->
+      <aside class="fm-filtros" aria-label="Filtros de búsqueda de productos">
+
+        <div class="fm-filtros__header">
+          <svg class="fm-filtros__header-icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+          <h2 class="fm-filtros__title">Filtros</h2>
+        </div>
+
+        <!-- Buscador de texto -->
+        <div class="fm-filtros__group">
+          <label class="fm-filtros__label" for="filtro-busqueda">Buscar</label>
+          <div class="fm-filtros__search">
+            <svg class="fm-filtros__search-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              id="filtro-busqueda"
+              class="fm-filtros__input"
+              type="text"
+              name="busqueda"
+              placeholder="Nombre, marca o ingrediente..."
+              autocomplete="off"
+              [(ngModel)]="busqueda"
+            />
+          </div>
+        </div>
+
+        <!-- Selector de categoría -->
+        <div class="fm-filtros__group">
+          <label class="fm-filtros__label" for="filtro-categoria">Categoría</label>
+          <select
+            id="filtro-categoria"
+            class="fm-filtros__select"
+            name="categoria"
+            [(ngModel)]="categoriaSeleccionada"
+          >
+            @for (cat of categorias; track cat.value) {
+              <option [value]="cat.value">{{ cat.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Selector de objetivo cognitivo -->
+        <div class="fm-filtros__group">
+          <label class="fm-filtros__label" for="filtro-objetivo">Objetivo Cognitivo</label>
+          <select
+            id="filtro-objetivo"
+            class="fm-filtros__select"
+            name="objetivo"
+            [(ngModel)]="objetivoSeleccionado"
+          >
+            @for (obj of objetivos; track obj.value) {
+              <option [value]="obj.value">{{ obj.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Control deslizante de precio máximo -->
+        <div class="fm-filtros__group">
+          <label class="fm-filtros__label" for="filtro-precio">
+            Precio máximo:
+            <span class="fm-filtros__price-value">S/ {{ precioMax.toFixed(2) }}</span>
+          </label>
+          <input
+            id="filtro-precio"
+            class="fm-filtros__range"
+            type="range"
+            name="precioMax"
+            [min]="precioMinimo"
+            [max]="precioMaximoAbsoluto"
+            step="5"
+            [(ngModel)]="precioMax"
+          />
+          <div class="fm-filtros__range-labels">
+            <span>S/ {{ precioMinimo.toFixed(2) }}</span>
+            <span>S/ {{ precioMaximoAbsoluto.toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Chips de filtros activos -->
+        @if (hayFiltrosActivos) {
+          <div class="fm-filtros__chips" aria-label="Filtros activos aplicados">
+            @if (busqueda.trim() !== '') {
+              <span class="fm-chip">"{{ busqueda }}"</span>
+            }
+            @if (categoriaSeleccionada !== '') {
+              <span class="fm-chip">{{ obtenerLabelCategoria(categoriaSeleccionada) }}</span>
+            }
+            @if (objetivoSeleccionado !== '') {
+              <span class="fm-chip">{{ obtenerLabelObjetivo(objetivoSeleccionado) }}</span>
+            }
+            @if (precioMax !== precioMaximoAbsoluto) {
+              <span class="fm-chip">&le; S/ {{ precioMax.toFixed(2) }}</span>
+            }
+          </div>
+        }
+
+        <!-- Botón limpiar filtros -->
+        <button
+          type="button"
+          class="fm-filtros__clear"
+          (click)="limpiarFiltros()"
+          [disabled]="!hayFiltrosActivos"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Limpiar filtros
+        </button>
+
+      </aside><!-- /.fm-filtros -->
+
+      <!-- ══════════════════════════════════════════════════
+           GRILLA DE PRODUCTOS (US-03)
+      ══════════════════════════════════════════════════════ -->
+      <div class="fm-productos">
+
+        @if (productosFiltrados.length > 0) {
+          <div class="fm-grid">
+            @for (producto of productosFiltrados; track producto.id) {
+              <a
+                class="fm-producto-card"
+                [routerLink]="['/catalogo', producto.id]"
+                [attr.aria-label]="'Ver ficha técnica de ' + producto.nombre"
+              >
+                <div class="fm-producto-card_media fm-producto-card_media--{{ producto.categoria }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10.5 20.5 21 10A4.95 4.95 0 1 0 14 3L3.5 13.5a4.95 4.95 0 1 0 7 7Z"/>
+                    <path d="m8.5 8.5 7 7"/>
+                  </svg>
+                </div>
+
+                <div class="fm-producto-card__body">
+                  <span class="fm-producto-card__chip">
+                    {{ obtenerLabelCategoria(producto.categoria) }}
+                  </span>
+
+                  <h3 class="fm-producto-card__nombre">{{ producto.nombre }}</h3>
+                  <p class="fm-producto-card__marca">{{ producto.marca }}</p>
+
+                  <p class="fm-producto-card__precio">S/ {{ producto.precio.toFixed(2) }}</p>
+
+                  @if (producto.registroSanitario) {
+                    <span class="fm-producto-card_badge fm-producto-card_badge--ok">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                      </svg>
+                      {{ producto.entidadRegistro }} Vigente
+                    </span>
+                  } @else {
+                    <span class="fm-producto-card_badge fm-producto-card_badge--err">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      </svg>
+                      Sin RS
+                    </span>
+                  }
+
+                  <span class="fm-producto-card__link">
+                    Ver ficha técnica
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14"/>
+                      <path d="m12 5 7 7-7 7"/>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            }
+          </div>
+        } @else {
+          <!-- Estado vacío (US-04) -->
+          <div class="fm-productos__empty">
+            <svg class="fm-productos__empty-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <h3 class="fm-productos__empty-title">
+              No encontramos productos con esos filtros
+            </h3>
+            <p class="fm-productos__empty-desc">
+              Intenta ajustar los criterios de búsqueda o limpia los filtros
+              para ver el catálogo completo.
+            </p>
+            <button type="button" class="fm-productos__empty-btn" (click)="limpiarFiltros()">
+              Limpiar filtros
+            </button>
+          </div>
+        }
+
+      </div><!-- /.fm-productos -->
+
+    </div><!-- /.fm-catalogo__layout -->
+  </div><!-- /.fm-catalogo__container -->
+</section>

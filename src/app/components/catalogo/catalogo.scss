@@ -1,0 +1,470 @@
+.fm-section-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fm-teal);
+  background: rgba(0, 150, 199, 0.10);
+  border: 1px solid rgba(0, 150, 199, 0.25);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+// ─── CONTENEDOR PRINCIPAL ───────────────────────────────────────────────────
+.fm-catalogo {
+  background: var(--fm-bg);
+  padding: 56px 28px 80px;
+  min-height: calc(100vh - var(--fm-navbar-h));
+
+  &__container {
+    max-width: var(--fm-max-w, 1280px);
+    margin: 0 auto;
+  }
+
+  // ── Encabezado ────────────────────────────────
+  &__header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 40px;
+  }
+
+  &__title {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--fm-navy);
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: var(--fm-text-muted);
+    line-height: 1.65;
+    margin: 0 auto 14px;
+  }
+
+  &__contador {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--fm-teal);
+    background: rgba(0, 180, 216, 0.10);
+    border: 1px solid rgba(0, 180, 216, 0.25);
+    padding: 5px 16px;
+    border-radius: 999px;
+  }
+
+  // ── Layout: panel filtros + grilla ─────────────
+  &__layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ─── PANEL DE FILTROS ────────────────────────────────────────────────────────
+.fm-filtros {
+  position: sticky;
+  top: calc(var(--fm-navbar-h) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--fm-white);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius);
+  padding: 24px;
+  box-shadow: var(--fm-shadow-sm);
+
+  @media (max-width: 900px) {
+    position: static;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--fm-border);
+  }
+
+  &__header-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--fm-cyan);
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--fm-navy);
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--fm-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__price-value {
+    color: var(--fm-teal);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  // ── Buscador ──────────────────────────────────
+  &__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    color: var(--fm-text-muted);
+    pointer-events: none;
+  }
+
+  // ── Input / Select base ──────────────────────────
+  &__input,
+  &__select {
+    width: 100%;
+    height: 42px;
+    font-size: 0.875rem;
+    font-family: var(--fm-font, inherit);
+    color: var(--fm-text);
+    background: var(--fm-surface);
+    border: 1.5px solid var(--fm-border);
+    border-radius: var(--fm-radius-sm);
+    outline: none;
+    transition: border-color 0.20s, box-shadow 0.20s, background 0.20s;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: var(--fm-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.14);
+      background: var(--fm-white);
+    }
+  }
+
+  &__input {
+    padding: 0 12px 0 38px;
+
+    &::placeholder {
+      color: rgba(74, 112, 144, 0.50);
+      font-style: italic;
+    }
+  }
+
+  &__select {
+    padding: 0 12px;
+    cursor: pointer;
+  }
+
+  // ── Range slider de precio ───────────────────────
+  &__range {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--fm-border);
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    margin: 6px 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--fm-gradient-card);
+      box-shadow: 0 2px 8px rgba(0, 180, 216, 0.45);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border: none;
+      border-radius: 50%;
+      background: var(--fm-gradient-card);
+      box-shadow: 0 2px 8px rgba(0, 180, 216, 0.45);
+      cursor: pointer;
+    }
+  }
+
+  &__range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--fm-text-muted);
+  }
+
+  // ── Chips de filtros activos ─────────────────────
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  // ── Botón limpiar ─────────────────────────────────
+  &__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 42px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--fm-font, inherit);
+    color: var(--fm-navy);
+    background: transparent;
+    border: 1.5px solid var(--fm-border);
+    border-radius: var(--fm-radius-sm);
+    cursor: pointer;
+    transition: border-color 0.20s, color 0.20s, opacity 0.20s;
+
+    svg { width: 15px; height: 15px; }
+
+    &:hover:not(:disabled) {
+      border-color: var(--fm-cyan);
+      color: var(--fm-teal);
+    }
+
+    &:disabled {
+      opacity: 0.40;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ─── CHIP REUTILIZABLE ────────────────────────────────────────────────────────
+.fm-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--fm-blue-deep);
+  background: var(--fm-cyan-pale);
+  border: 1px solid rgba(0, 180, 216, 0.30);
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+// ─── GRILLA DE PRODUCTOS ────────────────────────────────────────────────────────
+.fm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+// ─── TARJETA DE PRODUCTO ─────────────────────────────────────────────────────
+.fm-producto-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--fm-white);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius);
+  box-shadow: var(--fm-shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.22s, box-shadow 0.22s;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--fm-shadow-md);
+  }
+
+  // ── Cabecera visual con icono por categoría ────
+  &__media {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 48px;
+      height: 48px;
+      color: #fff;
+      opacity: 0.92;
+    }
+
+    &--memoria  { background: linear-gradient(135deg, var(--fm-blue-deep), var(--fm-cyan)); }
+    &--enfoque  { background: linear-gradient(135deg, var(--fm-teal), var(--fm-cyan-light)); }
+    &--energia  { background: linear-gradient(135deg, var(--fm-green-teal), var(--fm-green-light)); }
+    &--sueno    { background: linear-gradient(135deg, var(--fm-navy), var(--fm-blue)); }
+    &--estres   { background: linear-gradient(135deg, var(--fm-green-teal), var(--fm-cyan)); }
+    &--animo    { background: linear-gradient(135deg, var(--fm-blue), var(--fm-cyan-light)); }
+  }
+
+  // ── Cuerpo de la tarjeta ─────────────────────────
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    flex: 1;
+  }
+
+  &__chip {
+    align-self: flex-start;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fm-teal);
+    background: rgba(0, 150, 199, 0.10);
+    border: 1px solid rgba(0, 150, 199, 0.25);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  &__nombre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--fm-navy);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  &__marca {
+    font-size: 0.8rem;
+    color: var(--fm-text-muted);
+    margin-top: -4px;
+  }
+
+  &__precio {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--fm-blue);
+    margin: 2px 0;
+  }
+
+  // ── Badges de Registro Sanitario (ABET 2) ────────
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 999px;
+
+    svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    &--ok {
+      color: var(--fm-green-teal);
+      background: rgba(10, 147, 150, 0.12);
+      border: 1px solid rgba(10, 147, 150, 0.30);
+    }
+
+    &--err {
+      color: #D64550;
+      background: rgba(214, 69, 80, 0.10);
+      border: 1px solid rgba(214, 69, 80, 0.30);
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fm-blue);
+    margin-top: auto;
+    padding-top: 8px;
+    transition: gap 0.2s, color 0.2s;
+
+    svg { width: 16px; height: 16px; transition: transform 0.2s; }
+  }
+
+  &:hover &__link {
+    color: var(--fm-teal);
+
+    svg { transform: translateX(4px); }
+  }
+}
+
+// ─── ESTADO VACÍO ─────────────────────────────────────────────────────────────
+.fm-productos__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 80px 24px;
+  background: var(--fm-white);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius);
+  box-shadow: var(--fm-shadow-sm);
+}
+
+.fm-productos__empty-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--fm-cyan);
+}
+
+.fm-productos__empty-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fm-navy);
+}
+
+.fm-productos__empty-desc {
+  font-size: 0.9rem;
+  color: var(--fm-text-muted);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.fm-productos__empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--fm-font, inherit);
+  color: #fff;
+  background: var(--fm-gradient-card);
+  border: none;
+  padding: 11px 24px;
+  border-radius: var(--fm-radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 180, 216, 0.30);
+  transition: opacity 0.2s, transform 0.18s;
+
+  &:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+  }
+}
