@@ -1,85 +1,218 @@
-<section class="fm-detalle" aria-labelledby="detalle-titulo">
-  <div class="fm-detalle__card">
+<section class="product-detail" aria-labelledby="detalle-titulo">
 
-    <!-- Badge de sprint -->
-    <span class="fm-detalle__sprint-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
+  <!-- ── Estado de carga ──────────────────────────────────── -->
+  @if (cargando) {
+    <div class="product-detail__loading" role="status" aria-live="polite">
+      <svg class="product-detail__loading-icon" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <line x1="12" y1="2" x2="12" y2="6"/>
+        <line x1="12" y1="18" x2="12" y2="22"/>
+        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
+        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
+        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
       </svg>
-      En construcción
-    </span>
-
-    <!-- Icono central -->
-    <div class="fm-detalle__icon-wrap" aria-hidden="true">
-      <svg class="fm-detalle__icon" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="1.5"
-           stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-        <polyline points="10 9 9 9 8 9"/>
-      </svg>
+      <p>Cargando ficha técnica del producto...</p>
     </div>
+  }
 
-    <!-- Título -->
-    <h1 id="detalle-titulo" class="fm-detalle__title">
-      Ficha Técnica del Producto
-    </h1>
+  <!-- ── Estado de error: producto no encontrado ─────────────── -->
+  @if (!cargando && noEncontrado) {
+    <div class="product-detail__not-found" role="alert" aria-label="Producto no encontrado">
+      <div class="product-detail__not-found-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <h1 class="product-detail__not-found-title">Producto no encontrado</h1>
+      <p class="product-detail__not-found-desc">
+        El producto con identificador "{{ id }}" no existe en nuestro catálogo.
+        Verifica el enlace o vuelve al catálogo completo para seguir explorando.
+      </p>
+      <a routerLink="/catalogo" class="product-detail__back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Volver al catálogo
+      </a>
+    </div>
+  }
 
-    <!-- Descripción informativa -->
-    <p class="fm-detalle__desc">
-      Esta vista corresponde al detalle individual del nootrópico seleccionado.
-      Aquí se implementará la ficha técnica completa durante el
-      <strong>Sprint 2</strong>, incluyendo:
-    </p>
+  <!-- ── Ficha técnica del producto ──────────────────────────── -->
+  @if (!cargando && producto) {
+    <div class="product-detail__container">
 
-    <!-- Lista de funcionalidades previstas -->
-    <!-- Cumplimiento ABET 2: el layout ya reserva los bloques para el
-         Registro Sanitario DIGESA/DIGEMID y el banner de alérgenos,
-         pendientes de Data Binding en Sprint 2. -->
-    <ul class="fm-detalle__features" aria-label="Funcionalidades previstas en Sprint 2">
-      <li class="fm-detalle__feature">
-        <span class="fm-detalle__feature-dot" aria-hidden="true"></span>
-        <span>
-          <strong>Ficha técnica del producto</strong><br>
-          <small>Nombre, marca, descripción, ingredientes activos y dosis recomendada.</small>
-        </span>
-      </li>
-      <li class="fm-detalle__feature">
-        <span class="fm-detalle__feature-dot" aria-hidden="true"></span>
-        <span>
-          <strong>Registro Sanitario DIGESA / DIGEMID (ABET 2)</strong><br>
-          <small>Badge condicional verde/rojo según el número de registro vigente.</small>
-        </span>
-      </li>
-      <li class="fm-detalle__feature">
-        <span class="fm-detalle__feature-dot" aria-hidden="true"></span>
-        <span>
-          <strong>Alertas de alérgenos (ABET 2)</strong><br>
-          <small>Banner de advertencia médica conforme al D.S. N.° 007-98-SA y el Codex Alimentarius.</small>
-        </span>
-      </li>
-      <li class="fm-detalle__feature">
-        <span class="fm-detalle__feature-dot" aria-hidden="true"></span>
-        <span>
-          <strong>Contraindicaciones y aviso legal</strong><br>
-          <small>Listado de contraindicaciones y recomendación de consulta médica.</small>
-        </span>
-      </li>
-    </ul>
+      <a routerLink="/catalogo" class="product-detail__breadcrumb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Volver al catálogo
+      </a>
 
-    <!-- Acción -->
-    <a routerLink="/catalogo" class="fm-detalle__btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
-      </svg>
-      Volver al Catálogo
-    </a>
+      <div class="product-detail__layout">
 
-  </div>
-</section><p>detalle works!</p>
+        <!-- Columna visual -->
+        <div class="product-detail__media product-detail__media--{{ producto.categoria }}" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.5 20.5 21 10A4.95 4.95 0 1 0 14 3L3.5 13.5a4.95 4.95 0 1 0 7 7Z"/>
+            <path d="m8.5 8.5 7 7"/>
+          </svg>
+        </div>
+
+        <!-- Columna de información -->
+        <div class="product-detail__info">
+
+          <span class="product-detail__chip">{{ categoriaLabel }}</span>
+
+          <h1 id="detalle-titulo" class="product-detail__nombre">{{ producto.nombre }}</h1>
+          <p class="product-detail__marca">{{ producto.marca }}</p>
+          <p class="product-detail__precio">S/ {{ producto.precio.toFixed(2) }}</p>
+
+          <!-- Badge de Registro Sanitario DIGESA/DIGEMID (ABET 2) -->
+          @if (tieneRegistroSanitario) {
+            <div class="product-detail__badge product-detail__badge--ok" role="note"
+                 aria-label="Registro Sanitario vigente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              <span>
+                <strong>Registro Sanitario Vigente</strong>
+                {{ producto.entidadRegistro }}: {{ producto.registroSanitario }}
+              </span>
+            </div>
+          } @else {
+            <div class="product-detail__badge product-detail__badge--err" role="note"
+                 aria-label="Registro Sanitario no disponible">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>
+                <strong>Registro Sanitario no disponible</strong>
+                — No recomendamos la compra de este producto
+              </span>
+            </div>
+          }
+
+          <p class="product-detail__descripcion">{{ producto.descripcion }}</p>
+
+          <!-- Dosis recomendada -->
+          <div class="product-detail__dosis">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <span><strong>Dosis recomendada:</strong> {{ producto.dosisRecomendada }}</span>
+          </div>
+
+        </div><!-- /.product-detail__info -->
+      </div><!-- /.product-detail__layout -->
+
+      <!-- Banner de advertencia médica por alérgenos (ABET 2) -->
+      @if (tieneAlergenos) {
+        <div class="product-detail__alergen-banner" role="alert"
+             aria-label="Advertencia de alérgenos según el Codex Alimentarius">
+          <div class="product-detail__alergen-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <h2>Atención: Alérgenos Declarados</h2>
+          </div>
+          <ul class="product-detail__alergen-list">
+            @for (alergeno of producto.alergenos; track alergeno) {
+              <li>Contiene: {{ alergeno }}</li>
+            }
+          </ul>
+          <p class="product-detail__alergen-footer">
+            Esta declaración cumple con el <strong>Codex Alimentarius</strong> y el
+            <strong>D.S. N.° 007-98-SA</strong> (Perú). Si usted es alérgico a alguno
+            de estos componentes, consulte a su médico antes de consumir este producto.
+          </p>
+        </div>
+      }
+
+      <!-- Ingredientes activos -->
+      <section class="product-detail__section" aria-labelledby="ingredientes-titulo">
+        <h2 id="ingredientes-titulo" class="product-detail__section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.5 20.5 21 10A4.95 4.95 0 1 0 14 3L3.5 13.5a4.95 4.95 0 1 0 7 7Z"/>
+            <path d="m8.5 8.5 7 7"/>
+          </svg>
+          Ingredientes Activos
+        </h2>
+        <ul class="product-detail__ingredientes">
+          @for (ingrediente of producto.ingredientes; track ingrediente) {
+            <li class="product-detail__ingrediente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              {{ ingrediente }}
+            </li>
+          }
+        </ul>
+      </section>
+
+      <!-- Contraindicaciones -->
+      @if (producto.contraindicaciones.length > 0) {
+        <section class="product-detail__section" aria-labelledby="contraindicaciones-titulo">
+          <h2 id="contraindicaciones-titulo" class="product-detail__section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Contraindicaciones
+          </h2>
+          <ul class="product-detail__contraindicaciones">
+            @for (item of producto.contraindicaciones; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <!-- Aviso legal -->
+      <p class="product-detail__aviso-legal">
+        Este producto no está destinado a diagnosticar, tratar, curar ni prevenir
+        enfermedades. Consulte a su médico antes de iniciar cualquier suplementación,
+        conforme a la Ley N.° 29571 — Código de Protección al Consumidor.
+      </p>
+
+      <a routerLink="/catalogo" class="product-detail__back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Volver al catálogo
+      </a>
+
+    </div><!-- /.product-detail__container -->
+  }
+
+</section>
