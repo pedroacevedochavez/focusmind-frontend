@@ -1,10 +1,11 @@
-import { Producto } from '../models/producto.model';
+import { Producto } from '../../models/producto.model/producto.model';
 
 export const PRODUCTOS_MOCK: Producto[] = [
   {
     id: 1,
     nombre: 'NeuroFocus Alpha',
     marca: 'NutraLab Perú',
+    imagen: 'assets/nootropico-memoria-alpha.jpg',
     categoria: 'memoria',
     objetivo: 'mejorar-memoria',
     precio: 119.90,
@@ -29,6 +30,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 2,
     nombre: 'ZenCalm Magnesio',
     marca: 'Andes Wellness',
+    imagen: 'assets/suplemento-estres-magnesio.jpg',
     categoria: 'estres',
     objetivo: 'reducir-estres',
     precio: 75.00,
@@ -51,6 +53,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 3,
     nombre: 'EnergyBoost Cordyceps',
     marca: 'PerúVital Labs',
+    imagen: 'assets/suplemento-energia-cordyceps.jpg',
     categoria: 'energia',
     objetivo: 'aumentar-energia',
     precio: 145.50,
@@ -74,6 +77,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 4,
     nombre: 'DeepSleep Melatonina',
     marca: 'Andes Wellness',
+    imagen: 'assets/suplemento-sueno-melatonina.jpg',
     categoria: 'sueno',
     objetivo: 'mejorar-sueno',
     precio: 58.90,
@@ -96,6 +100,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 5,
     nombre: 'MoodLift Omega-3',
     marca: 'NutraLab Perú',
+    imagen: 'assets/suplemento-animo-omega3.jpg',
     categoria: 'animo',
     objetivo: 'mejorar-animo',
     precio: 99.90,
@@ -119,6 +124,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 6,
     nombre: 'ClarityMind Bacopa',
     marca: 'BioCognition',
+    imagen: 'assets/nootropico-enfoque-bacopa.jpg',
     categoria: 'enfoque',
     objetivo: 'aumentar-concentracion',
     precio: 64.90,
@@ -140,6 +146,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 7,
     nombre: 'MemoryPlus Ginkgo',
     marca: 'PerúVital Labs',
+    imagen: 'assets/nootropico-memoria-ginkgo.jpg',
     categoria: 'memoria',
     objetivo: 'mejorar-memoria',
     precio: 89.50,
@@ -163,6 +170,7 @@ export const PRODUCTOS_MOCK: Producto[] = [
     id: 8,
     nombre: 'FocusPro L-Teanina',
     marca: 'BioCognition',
+    imagen: 'assets/nootropico-enfoque-teanina.jpg',
     categoria: 'enfoque',
     objetivo: 'aumentar-concentracion',
     precio: 110.00,

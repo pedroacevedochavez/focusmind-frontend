@@ -28,6 +28,7 @@ export interface Producto {
   dosisRecomendada: string;
   contraindicaciones: string[];
   alergenos: string[];
+  imagen: string;
   /** Número de Registro Sanitario. null si el producto NO cuenta con RS vigente (ABET 2). */
   registroSanitario: string | null;
   /** Entidad emisora del registro. null si registroSanitario es null. */

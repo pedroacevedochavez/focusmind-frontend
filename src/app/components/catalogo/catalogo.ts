@@ -8,8 +8,8 @@ import {
   ObjetivoCognitivo,
   CATEGORIA_LABELS,
   OBJETIVO_LABELS,
-} from '../../models/producto.model';
-import { PRODUCTOS_MOCK } from '../../data/productos.mock';
+} from '../../models/producto.model/producto.model';
+import { PRODUCTOS_MOCK } from '../../data/productos.mock/productos.mock';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — catalogo.ts
