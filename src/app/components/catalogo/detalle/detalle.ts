@@ -1,6 +1,8 @@
 import { Component }   from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink }   from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Producto, CATEGORIA_LABELS } from '../../../models/producto.model/producto.model';
+import { PRODUCTOS_MOCK } from '../../../data/productos.mock/productos.mock';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — detalle.component.ts
@@ -16,4 +18,27 @@ import { RouterLink }   from '@angular/router';
   templateUrl: './detalle.html',
   styleUrl:    './detalle.scss',
 })
-export class DetalleComponent {}
+export class DetalleComponent {
+  cargando = false;
+  noEncontrado = false;
+  id: string | null = null;
+  producto?: Producto;
+
+  constructor(private route: ActivatedRoute) {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.producto = PRODUCTOS_MOCK.find(p => p.id === Number(this.id));
+    this.noEncontrado = !this.producto;
+  }
+
+  get categoriaLabel(): string {
+    return this.producto ? CATEGORIA_LABELS[this.producto.categoria] : '';
+  }
+
+  get tieneRegistroSanitario(): boolean {
+    return !!this.producto?.registroSanitario;
+  }
+
+  get tieneAlergenos(): boolean {
+    return !!this.producto && this.producto.alergenos.length > 0;
+  }
+}
