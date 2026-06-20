@@ -1,7 +1,7 @@
 <!-- ══════════════════════════════════════════════════════════════
      FOCUSMIND S.A.C. — app.html
      Plantilla raíz global: Navbar + Router Outlet + Footer
-     100 % HTML5 nativo | SVG inline  
+     100 % HTML5 nativo | SVG inline
 ════════════════════════════════════════════════════════════════ -->
 
 <!-- ── NAVBAR SUPERIOR FIJA ────────────────────────────────────── -->
@@ -86,22 +86,53 @@
       <!-- Separador visual vertical -->
       <div class="fm-navbar__sep" aria-hidden="true"></div>
 
-      <!-- Acceso / Login -->
-      <a
-        routerLink="/acceso"
-        routerLinkActive="fm-navbar__login--active"
-        class="fm-navbar__login"
-        role="menuitem"
-        aria-label="Acceder o iniciar sesión en FocusMind"
-      >
-        <svg class="fm-navbar__icon" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-        Acceder
-      </a>
+      <!-- Acceso / Mi Perfil — visibilidad contextual según sesión (US-07) -->
+      @if (sesionActiva()) {
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="fm-navbar__login--active"
+          class="fm-navbar__login"
+          role="menuitem"
+          aria-label="Ir a mi perfil"
+        >
+          <svg class="fm-navbar__icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Mi Perfil
+        </a>
+        <button
+          type="button"
+          class="fm-navbar__logout"
+          (click)="cerrarSesion()"
+          aria-label="Cerrar sesión"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      } @else {
+        <a
+          routerLink="/acceso"
+          routerLinkActive="fm-navbar__login--active"
+          class="fm-navbar__login"
+          role="menuitem"
+          aria-label="Acceder o iniciar sesión en FocusMind"
+        >
+          <svg class="fm-navbar__icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Acceder
+        </a>
+      }
 
     </div><!-- /.fm-navbar__nav -->
 
@@ -166,7 +197,7 @@
 
       <a routerLink="/quiz"
          routerLinkActive="fm-navbar__mobile-link--active"
-         class="fm-navbar__mobile-link fm-navbar__mobile-link--cta"
+         class="fm-navbar_mobile-link fm-navbar_mobile-link--cta"
          role="menuitem"
          (click)="toggleMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -183,17 +214,44 @@
 
       <div class="fm-navbar__mobile-sep" aria-hidden="true"></div>
 
-      <a routerLink="/acceso"
-         class="fm-navbar__mobile-link fm-navbar__mobile-link--login"
-         role="menuitem"
-         (click)="toggleMenu()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-        Acceder
-      </a>
+      @if (sesionActiva()) {
+        <a routerLink="/dashboard"
+           class="fm-navbar_mobile-link fm-navbar_mobile-link--login"
+           role="menuitem"
+           (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Mi Perfil
+        </a>
+        <button
+          type="button"
+          class="fm-navbar_mobile-link fm-navbar_mobile-link--logout"
+          (click)="cerrarSesion()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      } @else {
+        <a routerLink="/acceso"
+           class="fm-navbar_mobile-link fm-navbar_mobile-link--login"
+           role="menuitem"
+           (click)="toggleMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Acceder
+        </a>
+      }
 
     </div><!-- /.fm-navbar__mobile -->
   }
@@ -214,7 +272,7 @@
     <div class="fm-footer__container">
 
       <!-- Columna 1 — Marca + Redes sociales -->
-      <div class="fm-footer__col fm-footer__col--brand">
+      <div class="fm-footer_col fm-footer_col--brand">
 
         <a routerLink="/home" aria-label="FocusMind — Inicio">
           <img
