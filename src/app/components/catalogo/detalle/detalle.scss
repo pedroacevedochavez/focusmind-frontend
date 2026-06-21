@@ -4,6 +4,8 @@
 //  US-05: layout de ficha técnica con ruta dinámica /catalogo/:id
 //  US-06: .product-detail_badge--ok/--err y .product-detail_alergen-banner
 //         (cumplimiento ABET 2)
+//  US-09 (numeración del cliente): widget de compra al final del bloque
+//         (.product-detail__compra y modificadores asociados)
 // ══════════════════════════════════════════════════════════════════
 
 .product-detail {
@@ -250,6 +252,160 @@
     }
 
     strong { color: var(--fm-navy); }
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  WIDGET DE COMPRA — US-09 (numeración del cliente, Sprint 2)
+  // ════════════════════════════════════════════════════════════
+  &__compra {
+    margin-top:    8px;
+    padding-top:   20px;
+    border-top:    1px solid var(--fm-border);
+    display:       flex;
+    flex-direction: column;
+    gap:           14px;
+  }
+
+  &__cantidad {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           14px;
+    width:         fit-content;
+    background:    var(--fm-surface);
+    border:        1px solid var(--fm-border);
+    border-radius: var(--fm-radius-sm);
+    padding:       6px 10px;
+  }
+
+  &__cantidad-btn {
+    display:        flex;
+    align-items:    center;
+    justify-content: center;
+    width:          30px;
+    height:         30px;
+    background:     var(--fm-white);
+    border:         1px solid var(--fm-border);
+    border-radius:  var(--fm-radius-sm);
+    color:          var(--fm-navy);
+    cursor:         pointer;
+    transition:     border-color 0.20s, color 0.20s;
+
+    svg { width: 14px; height: 14px; }
+
+    &:hover:not(:disabled) { border-color: var(--fm-cyan); color: var(--fm-teal); }
+    &:disabled { opacity: 0.40; cursor: not-allowed; }
+  }
+
+  &__cantidad-valor {
+    min-width:   24px;
+    text-align:  center;
+    font-size:   1rem;
+    font-weight: 700;
+    color:       var(--fm-navy);
+  }
+
+  &__subtotal {
+    font-size: 0.9rem;
+    color:     var(--fm-text-muted);
+
+    strong { color: var(--fm-blue); font-size: 1.05rem; }
+  }
+
+  &__acciones-compra {
+    display:   flex;
+    gap:       12px;
+    flex-wrap: wrap;
+  }
+
+  &__btn-carrito,
+  &__btn-comprar {
+    display:         inline-flex;
+    align-items:     center;
+    gap:             8px;
+    font-size:       0.9rem;
+    font-weight:     600;
+    padding:         12px 22px;
+    border-radius:   var(--fm-radius-sm);
+    cursor:          pointer;
+    transition:      opacity 0.20s, transform 0.18s, box-shadow 0.20s;
+
+    svg { width: 18px; height: 18px; }
+
+    &:hover { transform: translateY(-2px); }
+  }
+
+  &__btn-carrito {
+    background: var(--fm-white);
+    border:     1.5px solid var(--fm-cyan);
+    color:      var(--fm-teal);
+
+    &:hover { background: var(--fm-surface); }
+  }
+
+  &__btn-comprar {
+    background: var(--fm-gradient-card);
+    border:     none;
+    color:      #fff;
+    box-shadow: 0 4px 16px rgba(0, 180, 216, 0.30);
+
+    &:hover { opacity: 0.90; }
+  }
+
+  &__riesgo {
+    background:    rgba(214, 69, 80, 0.06);
+    border:        1px solid rgba(214, 69, 80, 0.30);
+    border-radius: var(--fm-radius-sm);
+    padding:       16px 18px;
+
+    p {
+      font-size:   0.875rem;
+      color:       var(--fm-navy);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+  }
+
+  &__riesgo-acciones {
+    display: flex;
+    gap:     10px;
+    flex-wrap: wrap;
+  }
+
+  &__btn-secundario,
+  &__btn-peligro {
+    font-size:     0.85rem;
+    font-weight:   600;
+    padding:       10px 18px;
+    border-radius: var(--fm-radius-sm);
+    cursor:        pointer;
+    transition:    opacity 0.20s;
+  }
+
+  &__btn-secundario {
+    background: var(--fm-white);
+    border:     1px solid var(--fm-border);
+    color:      var(--fm-text-muted);
+
+    &:hover { color: var(--fm-navy); }
+  }
+
+  &__btn-peligro {
+    background: #D64550;
+    border:     none;
+    color:      #fff;
+
+    &:hover { opacity: 0.88; }
+  }
+
+  &__toast {
+    font-size:     0.85rem;
+    font-weight:   600;
+    color:         var(--fm-green-teal);
+    background:    rgba(10, 147, 150, 0.08);
+    border:        1px solid rgba(10, 147, 150, 0.28);
+    border-radius: var(--fm-radius-sm);
+    padding:       10px 14px;
+    margin:        0;
   }
 
   // ── Banner de alérgenos (ABET 2) ─────────────────────────────────
