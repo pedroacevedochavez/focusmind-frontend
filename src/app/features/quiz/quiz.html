@@ -1,0 +1,215 @@
+<section class="fm-quiz" aria-labelledby="quiz-titulo">
+  <div class="fm-quiz__container">
+
+    <!-- ── Encabezado ──────────────────────────────────────────────── -->
+    <header class="fm-quiz__header">
+      <span class="fm-section-label">Diagnóstico Cognitivo</span>
+      <h1 id="quiz-titulo" class="fm-quiz__title">Quiz de Diagnóstico Cognitivo</h1>
+      <p class="fm-quiz__subtitle">
+        Responde 3 pasos breves sobre tu estrés, sueño y objetivo cognitivo
+        para recibir una recomendación de productos ajustada a tu perfil.
+      </p>
+    </header>
+
+    <!-- ── Banner de sesión: visible solo para visitantes sin login ──── -->
+    @if (!sesionActiva()) {
+      <div class="fm-quiz__banner" role="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span>Inicia sesión para guardar tu progreso en el historial.</span>
+        <a routerLink="/acceso" class="fm-quiz__banner-link">Iniciar sesión</a>
+      </div>
+    }
+
+    @if (!completado()) {
+
+      <!-- ── Indicador de progreso del Wizard ───────────────────────── -->
+      <div class="fm-quiz__progress" aria-label="Progreso del cuestionario">
+        @for (paso of [1, 2, 3]; track paso) {
+          <span
+            class="fm-quiz__progress-step"
+            [class.fm-quiz__progress-step--active]="pasoActual() === paso"
+            [class.fm-quiz__progress-step--done]="pasoActual() > paso"
+          >
+            {{ paso }}
+          </span>
+        }
+      </div>
+
+      <form class="fm-quiz__form" [formGroup]="formulario" (ngSubmit)="finalizar()" novalidate>
+
+        <!-- ── Paso 1: Estrés y sueño ──────────────────────────────── -->
+        @if (pasoActual() === 1) {
+          <div class="fm-quiz__step">
+            <h2 class="fm-quiz__step-title">Paso 1 de 3 — Estrés y sueño</h2>
+
+            <div class="fm-quiz__field">
+              <label for="q-estres">Nivel de estrés (1 a 10)</label>
+              <input
+                id="q-estres"
+                type="number"
+                min="1"
+                max="10"
+                formControlName="nivelEstres"
+                [class.fm-quiz__input--invalid]="campoInvalido('nivelEstres')"
+              />
+              @if (campoInvalido('nivelEstres')) {
+                <p class="fm-quiz__error">Este campo es requerido (valor entre 1 y 10).</p>
+              }
+            </div>
+
+            <div class="fm-quiz__field">
+              <label for="q-sueno">Calidad del sueño (1 a 10)</label>
+              <input
+                id="q-sueno"
+                type="number"
+                min="1"
+                max="10"
+                formControlName="calidadSueno"
+                [class.fm-quiz__input--invalid]="campoInvalido('calidadSueno')"
+              />
+              @if (campoInvalido('calidadSueno')) {
+                <p class="fm-quiz__error">Este campo es requerido (valor entre 1 y 10).</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ── Paso 2: Objetivo cognitivo ──────────────────────────── -->
+        @if (pasoActual() === 2) {
+          <div class="fm-quiz__step">
+            <h2 class="fm-quiz__step-title">Paso 2 de 3 — Objetivo cognitivo</h2>
+
+            <div class="fm-quiz__field">
+              <label for="q-objetivo">Objetivo cognitivo principal</label>
+              <select
+                id="q-objetivo"
+                formControlName="objetivoPrincipal"
+                [class.fm-quiz__input--invalid]="campoInvalido('objetivoPrincipal')"
+              >
+                <option value="" disabled>Selecciona una opción</option>
+                @for (opcion of objetivos; track opcion.value) {
+                  <option [value]="opcion.value">{{ opcion.label }}</option>
+                }
+              </select>
+              @if (campoInvalido('objetivoPrincipal')) {
+                <p class="fm-quiz__error">Selecciona tu objetivo cognitivo principal.</p>
+              }
+            </div>
+
+            <div class="fm-quiz__field">
+              <label for="q-horas">Horas de concentración diaria (1 a 16)</label>
+              <input
+                id="q-horas"
+                type="number"
+                min="1"
+                max="16"
+                formControlName="horasConcentracion"
+                [class.fm-quiz__input--invalid]="campoInvalido('horasConcentracion')"
+              />
+              @if (campoInvalido('horasConcentracion')) {
+                <p class="fm-quiz__error">Este campo es requerido (valor entre 1 y 16).</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ── Paso 3: Alergias y salud ─────────────────────────────── -->
+        @if (pasoActual() === 3) {
+          <div class="fm-quiz__step">
+            <h2 class="fm-quiz__step-title">Paso 3 de 3 — Alergias y salud</h2>
+
+            <div class="fm-quiz__field">
+              <label>Alergias alimentarias declaradas (opcional)</label>
+              <div class="fm-quiz__chips">
+                @for (alergeno of alergenosDisponibles; track alergeno) {
+                  <button
+                    type="button"
+                    class="fm-quiz__chip"
+                    [class.fm-quiz__chip--active]="estaAlergiaSeleccionada(alergeno)"
+                    (click)="toggleAlergia(alergeno)"
+                  >
+                    {{ alergeno }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="fm-quiz__field">
+              <label for="q-condicion">Condición médica preexistente (opcional)</label>
+              <input
+                id="q-condicion"
+                type="text"
+                formControlName="condicionMedica"
+                placeholder="Ej. hipertensión, gestación..."
+              />
+            </div>
+          </div>
+        }
+
+        <!-- ── Acciones del Wizard ─────────────────────────────────── -->
+        <div class="fm-quiz__actions">
+          @if (pasoActual() > 1) {
+            <button type="button" class="fm-quiz__btn-secundario" (click)="retrocederPaso()">
+              Atrás
+            </button>
+          }
+          @if (pasoActual() < 3) {
+            <button type="button" class="fm-quiz__btn-primario" (click)="avanzarPaso()">
+              Siguiente
+            </button>
+          } @else {
+            <button type="submit" class="fm-quiz__btn-primario">
+              Ver mis recomendaciones
+            </button>
+          }
+        </div>
+
+      </form>
+
+    } @else {
+
+      <!-- ── Resultados del diagnóstico ──────────────────────────────── -->
+      <div class="fm-quiz__resultados">
+        <h2 class="fm-quiz__resultados-title">Tus recomendaciones</h2>
+
+        @if (sesionActiva() && guardadoEnHistorial()) {
+          <p class="fm-quiz__resultados-guardado">
+            Tu resultado fue guardado en tu historial del Dashboard.
+          </p>
+        } @else {
+          <p class="fm-quiz__resultados-no-guardado">
+            Estos resultados no se guardaron en ningún perfil.
+            <a routerLink="/acceso">Inicia sesión</a> para conservarlos en tu historial
+            la próxima vez.
+          </p>
+        }
+
+        @if (recomendaciones().length > 0) {
+          <div class="fm-quiz__reco-grid">
+            @for (producto of recomendaciones(); track producto.id) {
+              <a [routerLink]="['/catalogo', producto.id]" class="fm-reco-card">
+                <span class="fm-reco-card__nombre">{{ producto.nombre }}</span>
+                <span class="fm-reco-card__precio">S/ {{ producto.precio.toFixed(2) }}</span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="fm-quiz__resultados-empty">
+            No encontramos productos específicos para tu objetivo y alergias declaradas.
+            Explora el <a routerLink="/catalogo">catálogo completo</a>.
+          </p>
+        }
+
+        <button type="button" class="fm-quiz__btn-secundario" (click)="reiniciar()">
+          Repetir el diagnóstico
+        </button>
+      </div>
+
+    }
+
+  </div><!-- /.fm-quiz__container -->
+</section>

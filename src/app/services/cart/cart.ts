@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { CookieService } from '../cookie.service/cookie.service';
-import { FM_COOKIE_KEYS } from '../../constants/cookies.constants';
-import { ItemCarrito } from '../../models/pedido.model';
+import { CookieService } from '../cookie/cookie';
+import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
+import { ItemCarrito } from '../../models/pedido/pedido';
 
 // ══════════════════════════════════════════════════════════════════
 //  US-09 / US-10 — Carrito de compras persistido en cookie de sesión
@@ -28,6 +28,7 @@ export class CartService {
     }
   }
 
+  // Si el producto ya está en el carrito, suma cantidades en vez de duplicar la fila.
   agregar(item: ItemCarrito): void {
     const items = [...this._items()];
     const existente = items.find(actual => actual.productoId === item.productoId);
@@ -42,6 +43,7 @@ export class CartService {
     this.persistir();
   }
 
+  // Cantidad <= 0 elimina el ítem del carrito (mismo filter de abajo que eliminar()).
   actualizarCantidad(productoId: number, cantidad: number): void {
     const items = this._items()
       .map(item => (item.productoId === productoId ? { ...item, cantidad } : item))

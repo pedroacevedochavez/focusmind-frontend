@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — app.ts (Componente Raíz)
@@ -18,7 +18,7 @@ import { AuthService } from './services/auth.service';
     RouterLinkActive,
   ],
   templateUrl: './app.html',
-  styleUrl:    './app.scss',
+  styleUrl:    './app.css',
 })
 export class App {
   readonly title = 'FocusMind';

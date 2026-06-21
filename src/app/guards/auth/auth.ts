@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service/auth.service';
+import { AuthService } from '../../services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
 //  US-07 — Route Guard del Dashboard y del Checkout.

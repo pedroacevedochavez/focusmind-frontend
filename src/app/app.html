@@ -197,7 +197,7 @@
 
       <a routerLink="/quiz"
          routerLinkActive="fm-navbar__mobile-link--active"
-         class="fm-navbar_mobile-link fm-navbar_mobile-link--cta"
+         class="fm-navbar__mobile-link fm-navbar__mobile-link--cta"
          role="menuitem"
          (click)="toggleMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -216,7 +216,7 @@
 
       @if (sesionActiva()) {
         <a routerLink="/dashboard"
-           class="fm-navbar_mobile-link fm-navbar_mobile-link--login"
+           class="fm-navbar__mobile-link fm-navbar__mobile-link--login"
            role="menuitem"
            (click)="toggleMenu()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -228,7 +228,7 @@
         </a>
         <button
           type="button"
-          class="fm-navbar_mobile-link fm-navbar_mobile-link--logout"
+          class="fm-navbar__mobile-link fm-navbar__mobile-link--logout"
           (click)="cerrarSesion()"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -241,7 +241,7 @@
         </button>
       } @else {
         <a routerLink="/acceso"
-           class="fm-navbar_mobile-link fm-navbar_mobile-link--login"
+           class="fm-navbar__mobile-link fm-navbar__mobile-link--login"
            role="menuitem"
            (click)="toggleMenu()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -272,7 +272,7 @@
     <div class="fm-footer__container">
 
       <!-- Columna 1 — Marca + Redes sociales -->
-      <div class="fm-footer_col fm-footer_col--brand">
+      <div class="fm-footer__col fm-footer__col--brand">
 
         <a routerLink="/home" aria-label="FocusMind — Inicio">
           <img

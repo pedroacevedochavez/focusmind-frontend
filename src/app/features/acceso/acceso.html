@@ -1,0 +1,193 @@
+<section class="fm-acceso" aria-label="Página de acceso a FocusMind">
+
+  <!-- Orbes decorativos de fondo (coherentes con el hero) -->
+  <div class="fm-acceso__orb fm-acceso__orb--1" aria-hidden="true"></div>
+  <div class="fm-acceso__orb fm-acceso__orb--2" aria-hidden="true"></div>
+  <div class="fm-acceso__orb fm-acceso__orb--3" aria-hidden="true"></div>
+
+  <!-- ── TARJETA DE LOGIN ──────────────────────────────────────── -->
+  <div class="fm-login-card" role="main" aria-labelledby="login-titulo">
+
+    <!-- Barra superior de acento degradado -->
+    <div class="fm-login-card__accent-bar" aria-hidden="true"></div>
+
+    <div class="fm-login-card__inner">
+
+      <!-- Cabecera: logo + marca -->
+      <header class="fm-login-card__header">
+        <a routerLink="/home" class="fm-login-card__brand-link" aria-label="Volver al inicio de FocusMind">
+          <img
+            src="/assets/logo-focusmind.png"
+            alt="FocusMind"
+            class="fm-login-card__logo"
+            width="48"
+            height="48"
+            loading="eager"
+          />
+          <span class="fm-login-card__brand-name">
+            Focus<span class="fm-login-card__brand-accent">Mind</span>
+          </span>
+        </a>
+        <h1 id="login-titulo" class="fm-login-card__title">Bienvenido de vuelta</h1>
+        <p class="fm-login-card__subtitle">Accede a tu panel cognitivo personalizado</p>
+      </header>
+
+      <!-- Alerta de credenciales inválidas -->
+      @if (credencialesInvalidas) {
+        <div class="fm-login-card__alert" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Correo o contraseña incorrectos. Inténtalo nuevamente.
+        </div>
+      }
+
+      <!-- Formulario reactivo -->
+      <form
+        class="fm-login-card__form"
+        [formGroup]="formulario"
+        (ngSubmit)="ingresar()"
+        aria-label="Formulario de inicio de sesión"
+        novalidate
+      >
+
+        <!-- Campo: Correo electrónico -->
+        <div class="fm-login-card__field">
+          <label class="fm-login-card__label" for="campo-email">
+            <svg class="fm-login-card__field-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Correo electrónico
+          </label>
+          <div class="fm-login-card__input-wrap">
+            <input
+              id="campo-email"
+              class="fm-login-card__input"
+              [class.fm-login-card__input--invalid]="campoInvalido('email')"
+              type="email"
+              formControlName="email"
+              placeholder="usuario@ejemplo.com"
+              autocomplete="email"
+              [attr.aria-invalid]="campoInvalido('email')"
+              aria-describedby="error-email"
+            />
+          </div>
+          @if (campoInvalido('email')) {
+            <p id="error-email" class="fm-login-card__error" role="alert">
+              @if (formulario.get('email')?.errors?.['required']) {
+                Este campo es requerido.
+              } @else {
+                Ingresa un correo electrónico válido.
+              }
+            </p>
+          }
+        </div>
+
+        <!-- Campo: Contraseña -->
+        <div class="fm-login-card__field">
+          <label class="fm-login-card__label" for="campo-password">
+            <svg class="fm-login-card__field-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Contraseña
+          </label>
+          <div class="fm-login-card__input-wrap">
+            <input
+              id="campo-password"
+              class="fm-login-card__input"
+              [class.fm-login-card__input--invalid]="campoInvalido('password')"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••••"
+              autocomplete="current-password"
+              [attr.aria-invalid]="campoInvalido('password')"
+              aria-describedby="error-password"
+            />
+            <button
+              type="button"
+              class="fm-login-card__toggle-pwd"
+              (click)="togglePassword()"
+              [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              @if (mostrarPassword) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                           a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4
+                           c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07
+                           a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              }
+            </button>
+          </div>
+          @if (campoInvalido('password')) {
+            <p id="error-password" class="fm-login-card__error" role="alert">
+              @if (formulario.get('password')?.errors?.['required']) {
+                Este campo es requerido.
+              } @else {
+                La contraseña debe tener al menos 6 caracteres.
+              }
+            </p>
+          }
+          <a href="#" class="fm-login-card__forgot">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón Ingresar -->
+        <button type="submit" class="fm-login-card__btn">
+          <svg class="fm-login-card__btn-icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Ingresar
+        </button>
+
+        <!-- Link a registro -->
+        <p class="fm-login-card__register-cta">
+          ¿Aún no tienes cuenta?
+          <a routerLink="/home" class="fm-login-card__register-link">
+            Solicitar acceso
+          </a>
+        </p>
+
+      </form><!-- /.fm-login-card__form -->
+
+      <!-- ── AVISO DE PRIVACIDAD — Ley N.° 29733 ──────────────────── -->
+      <aside class="fm-privacy-notice" role="note" aria-label="Aviso de privacidad">
+        <svg class="fm-privacy-notice__icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <p>
+          Tus datos de acceso se gestionan conforme a la
+          <strong>Ley N.° 29733 — Ley de Protección de Datos Personales del Perú</strong>.
+          La sesión se mantiene mediante una cookie cifrada con los atributos
+          <strong>Secure</strong> y <strong>SameSite=Strict</strong>, que se invalida
+          automáticamente al cerrar sesión o al expirar su período de vigencia.
+        </p>
+      </aside>
+
+    </div><!-- /.fm-login-card__inner -->
+  </div><!-- /.fm-login-card -->
+
+</section><!-- /.fm-acceso -->

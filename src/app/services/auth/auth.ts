@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { CookieService } from '../cookie.service/cookie.service';
-import { FM_COOKIE_KEYS } from '../../constants/cookies.constants';
-import { Usuario } from '../../models/usuario.model';
+import { CookieService } from '../cookie/cookie';
+import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
+import { Usuario } from '../../models/usuario/usuario';
 
 interface SesionPersistida {
   email: string;
@@ -32,6 +32,7 @@ export class AuthService {
   private readonly _sesionActiva = signal<boolean>(false);
   readonly sesionActiva = this._sesionActiva.asReadonly();
 
+  // Perfil mock fijo + email real de la cookie de sesión.
   readonly usuarioActual = computed<Usuario | null>(() => {
     if (!this._sesionActiva()) {
       return null;
@@ -50,6 +51,7 @@ export class AuthService {
    * Trabajo Final). Crea la cookie de sesión con un período de validez
    * de 1 día y los atributos de seguridad exigidos por el informe.
    */
+  // Sin validación contra backend real: cualquier email+password no vacíos autentican.
   login(email: string, password: string): boolean {
     if (!email || !password) {
       return false;

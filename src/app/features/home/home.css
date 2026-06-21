@@ -1,0 +1,372 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   HOME — Estilos modulares bajo metodología BEM
+   Bloques: .fm-hero, .fm-btn, .fm-benefits, .fm-benefit-card, .fm-cta-banner
+   Consume las variables globales de diseño definidas en src/styles.css (:root),
+   p.ej. --fm-navy (texto/títulos) y --fm-cyan (acentos, iconos, botones).
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── HERO ──────────────────────────────────────────────────────────────────── */
+.fm-hero {
+  position: relative;
+  min-height: calc(100vh - var(--fm-navbar-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fm-gradient-hero);
+  overflow: hidden;
+  padding: 80px 28px;
+}
+
+/* Orbes decorativos */
+.fm-hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.18;
+  filter: blur(60px);
+}
+.fm-hero__orb--1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, #00B4D8, transparent 70%);
+  top: -120px; right: -80px;
+}
+.fm-hero__orb--2 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, #0A9396, transparent 70%);
+  bottom: -60px; left: -60px;
+}
+.fm-hero__orb--3 {
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, #90E0EF, transparent 70%);
+  top: 40%; left: 30%;
+}
+
+/* Contenido */
+.fm-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  text-align: center;
+}
+
+.fm-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(0, 180, 216, 0.18);
+  border: 1px solid rgba(0, 180, 216, 0.45);
+  color: var(--fm-cyan-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 7px 18px;
+  border-radius: 999px;
+  margin-bottom: 32px;
+}
+.fm-hero__badge svg { width: 16px; height: 16px; color: var(--fm-cyan); }
+
+.fm-hero__title {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 22px;
+}
+
+.fm-hero__title--gradient {
+  background: linear-gradient(90deg, #48CAE4, #00B4D8, #90E0EF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fm-hero__subtitle {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: rgba(202, 240, 248, 0.82);
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0 auto 36px;
+}
+
+/* Botones */
+.fm-hero__actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+}
+
+/* Trust badges */
+.fm-hero__trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.fm-hero__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(144, 224, 239, 0.78);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.fm-hero__trust-item svg { width: 17px; height: 17px; color: var(--fm-cyan); }
+.fm-hero__trust-divider {
+  width: 1px; height: 20px;
+  background: rgba(0, 180, 216, 0.30);
+}
+
+/* ─── BOTONES REUTILIZABLES ───────────────────────────────────────────────────── */
+.fm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: var(--fm-radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.18s;
+}
+
+.fm-btn svg { width: 19px; height: 19px; }
+
+.fm-btn:hover { transform: translateY(-2px); }
+.fm-btn:active { transform: translateY(0); }
+
+.fm-btn--primary {
+  background: linear-gradient(135deg, #0077B6, #00B4D8);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.40);
+}
+.fm-btn--primary:hover { opacity: 0.90; }
+
+.fm-btn--outline {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.55);
+}
+.fm-btn--outline:hover { background: rgba(255,255,255,0.10); border-color: #fff; }
+
+.fm-btn--white {
+  background: #fff;
+  color: var(--fm-navy);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.fm-btn--white:hover { opacity: 0.92; }
+
+/* ─── BENEFITS SECTION ────────────────────────────────────────────────────────── */
+.fm-benefits {
+  padding: 100px 28px;
+  background: var(--fm-bg);
+}
+
+.fm-benefits__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fm-benefits__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.fm-benefits__title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--fm-navy);
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+
+.fm-benefits__subtitle {
+  font-size: 1rem;
+  color: var(--fm-text-muted);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+.fm-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 960px) {
+  .fm-benefits__grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+}
+@media (min-width: 961px) and (max-width: 1100px) {
+  .fm-benefits__grid { gap: 16px; }
+}
+
+/* ─── SECTION LABEL ───────────────────────────────────────────────────────────── */
+.fm-section-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fm-teal);
+  background: rgba(0, 150, 199, 0.10);
+  border: 1px solid rgba(0, 150, 199, 0.25);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+/* ─── BENEFIT CARDS ─────────────────────────────────────────────────────────────── */
+.fm-benefit-card {
+  position: relative;
+  border-radius: var(--fm-radius) !important;
+  border: 1px solid var(--fm-border) !important;
+  box-shadow: var(--fm-shadow-sm) !important;
+  transition: transform 0.25s, box-shadow 0.25s;
+  overflow: visible !important;
+  background: var(--fm-white) !important;
+}
+
+.fm-benefit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--fm-shadow-md) !important;
+}
+
+/* Variante destacada */
+.fm-benefit-card--featured {
+  border: 2px solid var(--fm-cyan) !important;
+  box-shadow: 0 8px 36px rgba(0, 180, 216, 0.22) !important;
+  background: linear-gradient(160deg, #fff 60%, rgba(202, 240, 248, 0.40)) !important;
+}
+
+.fm-benefit-card__badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, var(--fm-teal), var(--fm-cyan));
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 5px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  z-index: 10;
+}
+.fm-benefit-card__badge svg { width: 14px; height: 14px; }
+
+.fm-benefit-card__content {
+  padding: 36px 28px 28px !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Icono */
+.fm-benefit-card__icon-wrap {
+  width: 60px; height: 60px;
+  border-radius: var(--fm-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.fm-benefit-card__icon-wrap svg { width: 28px; height: 28px; }
+
+.fm-benefit-card__icon-wrap--science { background: rgba(0, 119, 182, 0.10); }
+.fm-benefit-card__icon-wrap--science svg { color: var(--fm-blue); }
+.fm-benefit-card__icon-wrap--digesa  { background: rgba(10, 147, 150, 0.12); }
+.fm-benefit-card__icon-wrap--digesa svg { color: var(--fm-green-teal); }
+.fm-benefit-card__icon-wrap--quiz    { background: rgba(0, 180, 216, 0.12); }
+.fm-benefit-card__icon-wrap--quiz svg { color: var(--fm-cyan); }
+
+.fm-benefit-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fm-navy);
+  letter-spacing: -0.015em;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.fm-benefit-card__desc {
+  font-size: 0.875rem;
+  color: var(--fm-text-muted);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.fm-benefit-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+  flex: 1;
+}
+
+.fm-benefit-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--fm-text);
+}
+
+.fm-benefit-card__list li svg {
+  width: 16px; height: 16px;
+  color: var(--fm-green-teal);
+  flex-shrink: 0;
+}
+
+.fm-benefit-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fm-blue);
+  text-decoration: none;
+  transition: gap 0.2s, color 0.2s;
+  margin-top: auto;
+}
+
+.fm-benefit-card__link svg { width: 16px; height: 16px; transition: transform 0.2s; }
+.fm-benefit-card__link:hover svg { transform: translateX(4px); }
+.fm-benefit-card__link:hover { color: var(--fm-teal); }
+
+.fm-benefit-card__link--cta { color: var(--fm-teal); }
+
+/* ─── BANNER CTA ──────────────────────────────────────────────────────────────── */
+.fm-cta-banner {
+  background: var(--fm-gradient-hero);
+  padding: 80px 28px;
+  text-align: center;
+}
+
+.fm-cta-banner__content { max-width: 620px; margin: 0 auto; }
+
+.fm-cta-banner__title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+
+.fm-cta-banner__sub {
+  font-size: 1rem;
+  color: rgba(202, 240, 248, 0.82);
+  margin-bottom: 34px;
+  line-height: 1.6;
+}

@@ -18,11 +18,12 @@ export class CookieService {
 
   obtener(nombre: string): string | null {
     const cookies = document.cookie ? document.cookie.split('; ') : [];
-    const prefijo = ${nombre}=;
+    const prefijo = `${nombre}=`;
     const encontrada = cookies.find(cookie => cookie.startsWith(prefijo));
     return encontrada ? decodeURIComponent(encontrada.substring(prefijo.length)) : null;
   }
 
+  // Si el JSON está corrupto o no existe, devuelve null en vez de lanzar error.
   obtenerJSON<T>(nombre: string): T | null {
     const valor = this.obtener(nombre);
     if (!valor) {
@@ -44,16 +45,17 @@ export class CookieService {
 
     document.cookie =
       `${nombre}=${encodeURIComponent(valor)}; expires=${fechaExpiracion.toUTCString()}; ` +
-      path=${path}; ${this.atributosSeguridad};
+      `path=${path}; ${this.atributosSeguridad}`;
   }
 
   guardarJSON(nombre: string, valor: unknown, opciones: CookieOptions = {}): void {
     this.guardar(nombre, JSON.stringify(valor), opciones);
   }
 
+  // Fecha en el pasado = forma estándar de invalidar una cookie en el navegador.
   eliminar(nombre: string, path: string = '/'): void {
     document.cookie =
-      ${nombre}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}; ${this.atributosSeguridad};
+      `${nombre}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}; ${this.atributosSeguridad}`;
   }
 
   existe(nombre: string): boolean {

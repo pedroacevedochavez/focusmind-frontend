@@ -18,7 +18,7 @@
 //    acceso, dashboard, quiz, checkout).
 // ══════════════════════════════════════════════════════════════════
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard } from './guards/auth/auth';
 
 export const routes: Routes = [
 
@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () =>
-      import('./components/home/home')
+      import('./features/home/home')
         .then(m => m.HomeComponent),
     title: 'FocusMind — Nootrópicos con Respaldo Científico',
   },
@@ -46,7 +46,7 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./components/dashboard/dashboard')
+      import('./features/dashboard/dashboard')
         .then(m => m.DashboardComponent),
     title: 'FocusMind — Panel de Control',
   },
@@ -56,7 +56,7 @@ export const routes: Routes = [
   {
     path: 'catalogo',
     loadComponent: () =>
-      import('./components/catalogo/catalogo')
+      import('./features/catalogo/catalogo')
         .then(m => m.CatalogoComponent),
     title: 'FocusMind — Catálogo de Nootrópicos',
   },
@@ -66,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'catalogo/:id',
     loadComponent: () =>
-      import('./components/catalogo/detalle/detalle')
+      import('./features/catalogo/detalle/detalle')
         .then(m => m.DetalleComponent),
     title: 'FocusMind — Detalle de Producto',
   },
@@ -76,7 +76,7 @@ export const routes: Routes = [
   {
     path: 'acceso',
     loadComponent: () =>
-      import('./components/acceso/acceso')
+      import('./features/acceso/acceso')
         .then(m => m.AccesoComponent),
     title: 'FocusMind — Acceso',
   },
@@ -86,7 +86,7 @@ export const routes: Routes = [
   {
     path: 'quiz',
     loadComponent: () =>
-      import('./components/quiz/quiz')
+      import('./features/quiz/quiz')
         .then(m => m.QuizComponent),
     title: 'FocusMind — Quiz de Diagnóstico Cognitivo',
   },
@@ -97,7 +97,7 @@ export const routes: Routes = [
     path: 'checkout',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./components/checkout/checkout')
+      import('./features/checkout/checkout')
         .then(m => m.CheckoutComponent),
     title: 'FocusMind — Finalizar Compra',
   },

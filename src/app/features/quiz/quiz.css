@@ -1,0 +1,331 @@
+/* src/app/features/quiz/quiz.css
+   ══════════════════════════════════════════════════════════════════
+   FocusMind S.A.C. — quiz.css
+   Quiz de Diagnóstico Cognitivo — Multi-Step Form (BEM).
+   Usa CSS Custom Properties globales definidas en :root (app.css).
+   ══════════════════════════════════════════════════════════════════ */
+
+.fm-section-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fm-teal);
+  background: rgba(0, 150, 199, 0.10);
+  border: 1px solid rgba(0, 150, 199, 0.25);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.fm-quiz {
+  background:    var(--fm-bg);
+  min-height:    calc(100vh - var(--fm-navbar-h));
+  padding:       56px 28px 80px;
+}
+
+.fm-quiz__container {
+  max-width: 720px;
+  margin:    0 auto;
+}
+
+.fm-quiz__header {
+  text-align:    center;
+  margin-bottom: 28px;
+}
+
+.fm-quiz__title {
+  font-size:      clamp(1.6rem, 3vw, 2.1rem);
+  font-weight:    700;
+  color:          var(--fm-navy);
+  letter-spacing: -0.025em;
+  margin-bottom:  10px;
+}
+
+.fm-quiz__subtitle {
+  font-size:   0.9rem;
+  color:       var(--fm-text-muted);
+  line-height: 1.6;
+}
+
+/* Banner de invitación a iniciar sesión (visitante sin login) */
+.fm-quiz__banner {
+  display:        flex;
+  align-items:    center;
+  gap:            10px;
+  flex-wrap:      wrap;
+  background:     var(--fm-surface);
+  border:         1px solid var(--fm-border);
+  border-left:    3px solid var(--fm-cyan);
+  border-radius:  var(--fm-radius-sm);
+  padding:        14px 18px;
+  margin-bottom:  28px;
+  font-size:      0.85rem;
+  color:          var(--fm-text-muted);
+}
+
+.fm-quiz__banner svg {
+  width:        18px;
+  height:       18px;
+  flex-shrink:  0;
+  color:        var(--fm-teal);
+}
+
+.fm-quiz__banner-link {
+  margin-left:     auto;
+  font-weight:      700;
+  color:            var(--fm-blue);
+  text-decoration:  none;
+  white-space:      nowrap;
+}
+
+.fm-quiz__banner-link:hover { color: var(--fm-teal); text-decoration: underline; }
+
+/* Indicador de progreso */
+.fm-quiz__progress {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             12px;
+  margin-bottom:   28px;
+}
+
+.fm-quiz__progress-step {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           32px;
+  height:          32px;
+  border-radius:   50%;
+  font-size:       0.875rem;
+  font-weight:     700;
+  color:           var(--fm-text-muted);
+  background:      var(--fm-surface);
+  border:          1.5px solid var(--fm-border);
+}
+
+.fm-quiz__progress-step--active {
+  color:       #fff;
+  background:  var(--fm-gradient-card);
+  border-color: transparent;
+}
+
+.fm-quiz__progress-step--done {
+  color:       var(--fm-teal);
+  border-color: var(--fm-cyan);
+}
+
+/* Formulario / pasos */
+.fm-quiz__form {
+  background:    var(--fm-white);
+  border:        1px solid var(--fm-border);
+  border-radius: var(--fm-radius-xl);
+  padding:       28px;
+  box-shadow:    var(--fm-shadow-sm);
+}
+
+.fm-quiz__step-title {
+  font-size:     1.05rem;
+  font-weight:   700;
+  color:         var(--fm-navy);
+  margin-bottom: 20px;
+}
+
+.fm-quiz__field {
+  display:        flex;
+  flex-direction: column;
+  gap:            6px;
+  margin-bottom:  18px;
+}
+
+.fm-quiz__field label {
+  font-size:      0.78rem;
+  font-weight:    600;
+  color:          var(--fm-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fm-quiz__field input,
+.fm-quiz__field select {
+  height:        46px;
+  padding:       0 14px;
+  font-size:     0.9rem;
+  font-family:   var(--fm-font);
+  color:         var(--fm-text);
+  background:    var(--fm-surface);
+  border:        1.5px solid var(--fm-border);
+  border-radius: var(--fm-radius-sm);
+  outline:       none;
+  transition:    border-color 0.20s, box-shadow 0.20s;
+}
+
+.fm-quiz__field input:focus,
+.fm-quiz__field select:focus {
+  border-color: var(--fm-cyan);
+  box-shadow:   0 0 0 3px rgba(0, 180, 216, 0.14);
+  background:   var(--fm-white);
+}
+
+.fm-quiz__input--invalid {
+  border-color: #D64550 !important;
+}
+
+.fm-quiz__error {
+  font-size:   0.76rem;
+  font-weight: 500;
+  color:       #D64550;
+  margin:      0;
+}
+
+/* Chips de selección de alérgenos */
+.fm-quiz__chips {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+}
+
+.fm-quiz__chip {
+  font-size:     0.82rem;
+  font-weight:   600;
+  padding:       8px 16px;
+  border-radius: 999px;
+  border:        1.5px solid var(--fm-border);
+  background:    var(--fm-surface);
+  color:         var(--fm-text-muted);
+  cursor:        pointer;
+  transition:    border-color 0.20s, color 0.20s, background 0.20s;
+}
+
+.fm-quiz__chip:hover { border-color: var(--fm-cyan); color: var(--fm-teal); }
+
+.fm-quiz__chip--active {
+  background:   var(--fm-gradient-card);
+  border-color: transparent;
+  color:        #fff;
+}
+
+/* Acciones del Wizard */
+.fm-quiz__actions {
+  display:         flex;
+  justify-content: flex-end;
+  gap:             12px;
+  margin-top:      8px;
+}
+
+.fm-quiz__btn-primario,
+.fm-quiz__btn-secundario {
+  font-size:     0.9rem;
+  font-weight:   600;
+  padding:       12px 26px;
+  border-radius: var(--fm-radius-sm);
+  cursor:        pointer;
+  transition:    opacity 0.20s, transform 0.18s, box-shadow 0.20s;
+}
+
+.fm-quiz__btn-primario {
+  background: var(--fm-gradient-card);
+  border:     none;
+  color:      #fff;
+  box-shadow: 0 4px 16px rgba(0, 180, 216, 0.30);
+}
+
+.fm-quiz__btn-primario:hover { opacity: 0.90; transform: translateY(-1px); }
+
+.fm-quiz__btn-secundario {
+  background: var(--fm-white);
+  border:     1.5px solid var(--fm-border);
+  color:      var(--fm-text-muted);
+}
+
+.fm-quiz__btn-secundario:hover { color: var(--fm-navy); border-color: var(--fm-cyan); }
+
+/* Resultados */
+.fm-quiz__resultados {
+  background:    var(--fm-white);
+  border:        1px solid var(--fm-border);
+  border-radius: var(--fm-radius-xl);
+  padding:       28px;
+  box-shadow:    var(--fm-shadow-sm);
+  text-align:    center;
+}
+
+.fm-quiz__resultados-title {
+  font-size:     1.3rem;
+  font-weight:   700;
+  color:         var(--fm-navy);
+  margin-bottom: 14px;
+}
+
+.fm-quiz__resultados-guardado {
+  font-size:     0.875rem;
+  font-weight:   600;
+  color:         var(--fm-green-teal);
+  background:    rgba(10, 147, 150, 0.08);
+  border:        1px solid rgba(10, 147, 150, 0.28);
+  border-radius: var(--fm-radius-sm);
+  padding:       10px 14px;
+  margin-bottom: 20px;
+}
+
+.fm-quiz__resultados-no-guardado {
+  font-size:     0.85rem;
+  color:         var(--fm-text-muted);
+  background:    var(--fm-surface);
+  border:        1px solid var(--fm-border);
+  border-radius: var(--fm-radius-sm);
+  padding:       12px 14px;
+  margin-bottom: 20px;
+  line-height:   1.6;
+}
+
+.fm-quiz__resultados-no-guardado a { color: var(--fm-blue); font-weight: 600; text-decoration: none; }
+.fm-quiz__resultados-no-guardado a:hover { text-decoration: underline; }
+
+.fm-quiz__resultados-empty {
+  font-size:     0.9rem;
+  color:         var(--fm-text-muted);
+  margin-bottom: 20px;
+}
+
+.fm-quiz__resultados-empty a { color: var(--fm-blue); font-weight: 600; text-decoration: none; }
+.fm-quiz__resultados-empty a:hover { text-decoration: underline; }
+
+.fm-quiz__reco-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:                   12px;
+  margin-bottom:         24px;
+}
+
+/* Tarjeta de recomendación (duplicada localmente: estilos por
+   componente con encapsulación Emulated, sin selectores globales) */
+.fm-reco-card {
+  display:         flex;
+  flex-direction:  column;
+  gap:             4px;
+  padding:         14px 16px;
+  background:      var(--fm-gradient-subtle);
+  border:          1px solid var(--fm-border);
+  border-radius:   var(--fm-radius-sm);
+  text-decoration: none;
+  transition:      transform 0.18s, box-shadow 0.20s;
+}
+
+.fm-reco-card:hover {
+  transform:  translateY(-2px);
+  box-shadow: var(--fm-shadow-sm);
+}
+
+.fm-reco-card__nombre {
+  font-size:   0.875rem;
+  font-weight: 700;
+  color:       var(--fm-navy);
+}
+
+.fm-reco-card__precio {
+  font-size:   0.8rem;
+  color:       var(--fm-blue);
+  font-weight: 600;
+}
