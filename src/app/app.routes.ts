@@ -5,18 +5,20 @@
 //  Rutas activas:
 //    /          → redirige a /home
 //    /home      → Landing Page principal (HomeComponent)
-//    /dashboard → Panel privado de usuario (DashboardComponent)
+//    /dashboard → Panel privado de usuario (DashboardComponent) — authGuard
 //    /catalogo  → Catálogo interactivo (CatalogoComponent)
 //    /catalogo/:id → Ficha de producto (DetalleComponent)
 //    /quiz      → Quiz cognitivo (QuizComponent)
 //    /acceso    → Módulo de autenticación (AccesoComponent)
+//    /checkout  → Simulación de compra (CheckoutComponent) — authGuard
 //    /**        → redirige a /home
 //
 //  ✔ Mapa de rutas MVP verificado: todas las rutas declaradas en minúsculas,
 //    sin alias duplicados ni rutas huérfanas (home, catalogo, catalogo/:id,
-//    acceso, dashboard, quiz).
+//    acceso, dashboard, quiz, checkout).
 // ══════════════════════════════════════════════════════════════════
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
 
@@ -37,11 +39,12 @@ export const routes: Routes = [
     title: 'FocusMind — Nootrópicos con Respaldo Científico',
   },
 
-  // ── /dashboard — Panel privado de usuario (renombrado desde /inicio) ────
-  //    Historial de tests, recomendaciones personalizadas
-  //    Protegido por AuthGuard (CanActivate)
+  // ── /dashboard — Panel privado de usuario ───────────────────────────────
+  //    Historial de tests, recomendaciones personalizadas.
+  //    Protegido por authGuard (CanActivate): verifica la cookie de sesión.
   {
     path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./components/dashboard/dashboard')
         .then(m => m.DashboardComponent),
@@ -69,7 +72,7 @@ export const routes: Routes = [
   },
 
   // ── /acceso — Módulo de Autenticación ─────────────────────────────────
-  //    Login con Reactive Forms, JWT, AuthGuard
+  //    Login con Reactive Forms, cookie de sesión
   {
     path: 'acceso',
     loadComponent: () =>
@@ -79,7 +82,7 @@ export const routes: Routes = [
   },
 
   // ── /quiz — Quiz cognitivo con Reactive Forms ─────────────
-  //    Apunta al componente actual 
+  //    Apunta al componente actual
   {
     path: 'quiz',
     loadComponent: () =>
@@ -87,6 +90,18 @@ export const routes: Routes = [
         .then(m => m.QuizComponent),
     title: 'FocusMind — Quiz de Diagnóstico Cognitivo',
   },
+
+  // ── /checkout — Formulario de Simulación de Compra ──────────────────────
+  //    Protegido por authGuard: solo usuarios autenticados pueden pagar.
+  {
+    path: 'checkout',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/checkout/checkout')
+        .then(m => m.CheckoutComponent),
+    title: 'FocusMind — Finalizar Compra',
+  },
+
   // ── Wildcard: cualquier ruta desconocida → /home ──────────────────────
   //    Resiliencia del enrutamiento global: ninguna URL inválida deja al
   //    usuario en una pantalla rota; siempre se redirige a la Landing Page.
