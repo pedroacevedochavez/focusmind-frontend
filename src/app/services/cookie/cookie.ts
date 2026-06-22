@@ -7,8 +7,8 @@ export interface CookieOptions {
 
 /**
  * Servicio transversal de gestión de Cookies de Sesión (RFC 6265).
- * Usado por: AuthService (US-07), CartService y PedidoService (US-09/US-10),
- * y por el motor de filtrado del catálogo (deuda técnica Sprint 1, US-04).
+ * Usado por: AuthService (HU-07), CartService y PedidoService (HU-10/HU-11),
+ * y por el panel de filtros del catálogo (HU-04, persistencia de criterios).
  * Toda cookie se persiste con los atributos de seguridad Secure y
  * SameSite=Strict exigidos por la sección 2.3.1 del informe FocusMind.
  */

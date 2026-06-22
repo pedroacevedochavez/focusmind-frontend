@@ -22,13 +22,12 @@ interface FiltrosCatalogoPersistidos {
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — catalogo.ts
-//  US-03: Grilla de productos + panel de filtros avanzados.
-//  US-04: Filtrado dinámico en memoria mediante Angular Data Binding
-//         ([(ngModel)] + getter productosFiltrados()).
-//  DEUDA TÉCNICA SPRINT 1: el estado de los 4 filtros se persiste en
-//  una cookie de sesión (7 días) para sobrevivir recargas de página,
-//  conforme al requisito transversal de persistencia con Cookies del
-//  informe FocusMind (sección 2.3.1).
+//  HU-03: Grid de productos + panel de filtros avanzados.
+//  HU-04: Motor de filtrado dinámico en memoria mediante Two-Way Data
+//         Binding ([(ngModel)] + getter productosFiltrados()).
+//  El estado de los 4 filtros se persiste en cookie (7 días) para
+//  sobrevivir recargas, conforme al servicio transversal de Cookies
+//  del informe FocusMind (sección 2.3.1).
 //  100% en memoria — sin peticiones HTTP. Mock: PRODUCTOS_MOCK.
 // ══════════════════════════════════════════════════════════════════
 @Component({

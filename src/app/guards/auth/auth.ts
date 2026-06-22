@@ -3,9 +3,9 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
-//  US-07 — Route Guard del Dashboard y del Checkout.
-//  Verifica la vigencia de la cookie de sesión antes de autorizar el
-//  acceso a rutas privadas; redirige a /acceso si no existe o expiró.
+//  Route Guard de autenticación (CanActivateFn) aplicado a /dashboard
+//  y /checkout (HU-10 / HU-11): verifica la cookie de sesión vigente
+//  antes de activar el componente; redirige a /acceso si no existe.
 // ══════════════════════════════════════════════════════════════════
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);

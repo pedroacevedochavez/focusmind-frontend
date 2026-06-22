@@ -1,3 +1,4 @@
+// Perfil cognitivo calculado a partir del diagnóstico más reciente del usuario (HU-10, Dashboard).
 export interface PerfilCognitivo {
   nivelEstres: number;
   calidadSueno: number;

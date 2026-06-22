@@ -9,11 +9,11 @@ import { ItemCarrito, Pedido } from '../../models/pedido/pedido';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — checkout.component.ts
-//  US-10 (numeración del cliente) — Formulario de Simulación de
-//  Compra. Reactive Forms con validación condicional del método de
-//  pago. Al confirmar: registra el pedido vía PedidoService (cookie
-//  de historial, 30 días), vacía el carrito (CartService) y muestra
-//  la confirmación con el número de pedido generado.
+//  HU-11: Carrito de Compras y Simulación de Checkout. Reactive Forms
+//  con validador condicional dinámico sobre el número de tarjeta según
+//  el método de pago. Al confirmar: registra el pedido vía PedidoService
+//  (cookie de historial, 30 días), vacía el carrito (CartService) y
+//  muestra la confirmación con el número de pedido generado.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-checkout',
@@ -47,12 +47,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Suscripción RxJS al cambio de método de pago, para reevaluar el validador condicional de tarjeta.
   ngOnInit(): void {
     this.suscripcionMetodoPago = this.formulario
       .get('metodoPago')!
       .valueChanges.subscribe((metodo: string) => this.actualizarValidadorTarjeta(metodo));
   }
 
+  // Libera la suscripción al destruir el componente, evitando memory leaks.
   ngOnDestroy(): void {
     this.suscripcionMetodoPago?.unsubscribe();
   }

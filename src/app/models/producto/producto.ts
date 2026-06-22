@@ -35,7 +35,7 @@ export interface Producto {
   entidadRegistro: EntidadRegistro | null;
 }
 
-/** Etiquetas legibles para el selector de categoría del panel de filtros (US-04). */
+/** Etiquetas legibles para el selector de categoría del panel de filtros (HU-04). */
 export const CATEGORIA_LABELS: Record<Categoria, string> = {
   memoria: 'Memoria',
   enfoque: 'Enfoque',
@@ -45,7 +45,7 @@ export const CATEGORIA_LABELS: Record<Categoria, string> = {
   animo: 'Ánimo',
 };
 
-/** Etiquetas legibles para el selector de objetivo cognitivo del panel de filtros (US-04). */
+/** Etiquetas legibles para el selector de objetivo cognitivo del panel de filtros (HU-04). */
 export const OBJETIVO_LABELS: Record<ObjetivoCognitivo, string> = {
   'mejorar-memoria': 'Mejorar la memoria',
   'aumentar-concentracion': 'Aumentar la concentración',

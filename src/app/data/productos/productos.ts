@@ -1,5 +1,7 @@
 import { Producto } from '../../models/producto/producto';
 
+// Repositorio Mock de 8 productos (HU-03/HU-04). El producto id 6 (sin registroSanitario)
+// valida intencionalmente el badge de alerta sanitaria ABET 2 (HU-06).
 export const PRODUCTOS_MOCK: Producto[] = [
   {
     id: 1,

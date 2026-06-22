@@ -4,10 +4,9 @@ import { AuthService } from './services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — app.ts (Componente Raíz)
-//  Prerrequisito estructural de US-07: el Navbar consulta el estado
-//  reactivo de sesión (AuthService.sesionActiva) para alternar entre
-//  el enlace "Acceder" y el bloque "Mi Perfil" + botón de Logout,
-//  conforme a la visibilidad contextual exigida por el informe base.
+//  HU-08 — Navbar Contextual: consulta el Signal de sesión activa
+//  (AuthService.sesionActiva) para alternar entre el enlace "Acceder"
+//  y el bloque "Mi Perfil" + botón "Cerrar sesión", sin recargar la SPA.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:     'app-root',

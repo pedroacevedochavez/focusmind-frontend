@@ -5,10 +5,10 @@ import { AuthService } from '../../services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — acceso.component.ts
-//  US-07: Autenticación y Control de Acceso de Usuarios (Sprint 2).
-//  Reactive Forms con validación síncrona; al autenticar exitosamente
-//  invoca AuthService.login(), que crea la cookie de sesión (Secure,
-//  SameSite=Strict) y redirige al Dashboard (/dashboard).
+//  HU-07: Módulo de Autenticación — Login con Reactive Forms (Sprint 2).
+//  Validación síncrona (email + password mín. 6 caracteres); al autenticar
+//  exitosamente invoca AuthService.login(), que crea la cookie de sesión
+//  (Secure, SameSite=Strict, 1 día) y redirige al Dashboard.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-acceso',

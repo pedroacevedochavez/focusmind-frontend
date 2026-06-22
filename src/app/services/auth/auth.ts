@@ -22,17 +22,18 @@ const USUARIO_MOCK: Usuario = {
 };
 
 // ══════════════════════════════════════════════════════════════════
-//  US-07 — Módulo de Autenticación y Control de Acceso (Sprint 2)
+//  HU-07 — Módulo de Autenticación: Login con Reactive Forms (Sprint 2)
 //  Gestiona la cookie de sesión (RFC 6265, Secure + SameSite=Strict)
-//  que habilita la visibilidad contextual del Navbar y el AuthGuard
-//  del Dashboard / Checkout.
+//  que habilita la visibilidad contextual del Navbar (HU-08) y el
+//  Route Guard del Dashboard / Checkout (HU-10 / HU-11).
 // ══════════════════════════════════════════════════════════════════
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Signal de estado reactivo de sesión activa (HU-08): dispara la re-evaluación del Navbar sin recargar la SPA.
   private readonly _sesionActiva = signal<boolean>(false);
   readonly sesionActiva = this._sesionActiva.asReadonly();
 
-  // Perfil mock fijo + email real de la cookie de sesión.
+  // Computed Signal: deriva el usuario visible combinando el perfil mock con el email real de la cookie de sesión.
   readonly usuarioActual = computed<Usuario | null>(() => {
     if (!this._sesionActiva()) {
       return null;
@@ -47,11 +48,10 @@ export class AuthService {
   }
 
   /**
-   * Simula la autenticación contra el servicio de negocio (diferido al
-   * Trabajo Final). Crea la cookie de sesión con un período de validez
-   * de 1 día y los atributos de seguridad exigidos por el informe.
+   * Autenticación simulada (HU-07): la verificación contra un servicio de negocio real
+   * queda diferida al Trabajo Final. Crea la cookie de sesión con vigencia de 1 día.
    */
-  // Sin validación contra backend real: cualquier email+password no vacíos autentican.
+  // Validación de negocio simulada: toda combinación de email/password no vacíos autentica con éxito.
   login(email: string, password: string): boolean {
     if (!email || !password) {
       return false;

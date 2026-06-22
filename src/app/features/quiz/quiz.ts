@@ -12,7 +12,7 @@ import {
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — quiz.component.ts
-//  Quiz de Diagnóstico Cognitivo — Multi-Step Form (Reactive Forms).
+//  HU-09: Multi-Step Form de Diagnóstico Cognitivo (Reactive Forms, 3 pasos).
 //
 //  ACCESIBILIDAD: ruta 100% pública (sin canActivate en app.routes.ts).
 //  El formulario se muestra siempre, esté o no autenticado el visitante.

@@ -4,8 +4,8 @@ import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
 import { Pedido } from '../../models/pedido/pedido';
 
 // ══════════════════════════════════════════════════════════════════
-//  US-10 — Historial de pedidos simulados (Checkout), persistido en
-//  cookie (30 días) y consumido por el Dashboard del usuario.
+//  HU-11 — Historial de pedidos simulados al confirmar el Checkout,
+//  persistido en cookie (30 días) y consumido por el Dashboard (HU-10).
 // ══════════════════════════════════════════════════════════════════
 @Injectable({ providedIn: 'root' })
 export class PedidoService {

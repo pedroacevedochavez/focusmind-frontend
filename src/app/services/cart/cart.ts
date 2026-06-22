@@ -4,9 +4,9 @@ import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
 import { ItemCarrito } from '../../models/pedido/pedido';
 
 // ══════════════════════════════════════════════════════════════════
-//  US-09 / US-10 — Carrito de compras persistido en cookie de sesión
-//  temporal (3 días). Usado por el detalle dinámico del producto
-//  (agregar al carrito) y por el Checkout (resumen y total a pagar).
+//  HU-11 — Carrito de compras persistido en cookie (3 días). Expone
+//  de forma reactiva (Computed Signals) la cantidad total y el monto
+//  acumulado, consumidos por el Dashboard (HU-10) y el Checkout (HU-11).
 // ══════════════════════════════════════════════════════════════════
 @Injectable({ providedIn: 'root' })
 export class CartService {

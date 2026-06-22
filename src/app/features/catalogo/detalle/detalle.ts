@@ -8,17 +8,15 @@ import { AuthService } from '../../../services/auth/auth';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — detalle.component.ts
-//  US-09 (numeración del cliente) — Interfaz Dinámica del Detalle.
-//  Añade sobre la ficha técnica estática (US-05/US-06 del documento
-//  base, ya implementadas): selector de cantidad, botón "Agregar al
-//  carrito" persistido vía CartService/CookieService, confirmación
-//  de riesgo cuando el producto no tiene Registro Sanitario vigente
-//  (restricción ABET 2) y acceso directo al Checkout (US-10).
+//  HU-05: Ficha técnica vía Route Parameter dinámico (Input Binding).
+//  Extiende la ficha con: selector de cantidad, "Agregar al carrito"
+//  (persistido vía CartService/CookieService, HU-11), confirmación de
+//  riesgo cuando el producto no tiene Registro Sanitario vigente
+//  (restricción ABET 2, HU-06) y acceso directo al Checkout (HU-11).
 //
-//  PROTECCIÓN DE COMPRA: "Agregar al carrito" y "Comprar ahora" exigen
-//  sesión activa (cookie fm_sesion vía AuthService). Sin sesión, la
-//  acción se bloquea y el visitante es redirigido de inmediato al
-//  módulo de autenticación (/acceso — ruta de Login de esta SPA).
+//  "Agregar al carrito" y "Comprar ahora" exigen sesión activa (cookie
+//  fm_sesion vía AuthService); sin sesión, la acción se bloquea y el
+//  visitante es redirigido al módulo de autenticación (/acceso).
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-detalle',

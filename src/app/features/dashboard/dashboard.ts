@@ -23,7 +23,7 @@ interface PerfilCognitivoVista {
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — dashboard.component.ts
-//  US-08 (numeración del cliente) — Panel de Control Personalizado.
+//  HU-10: Dashboard Privado del Usuario con Datos en Vivo.
 //  Protegido por authGuard (ver app.routes.ts). Lee el perfil del
 //  usuario autenticado desde AuthService (cookie de sesión), el
 //  historial de compras desde PedidoService (cookie de 30 días) y
