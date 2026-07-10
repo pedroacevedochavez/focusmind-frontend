@@ -1,74 +1,119 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { CookieService } from '../cookie/cookie';
-import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Usuario } from '../../models/usuario/usuario';
 
-interface SesionPersistida {
+// Forma exacta de FocusMind.DTO.Responses.AuthResponseDto (backend) — ver HU-14.
+interface UsuarioBackendDto {
+  idUsuario: number;
+  nombre: string;
   email: string;
-  autenticadoEn: string;
 }
 
-/** Perfil cognitivo representativo (Mock UI) — la integración con el motor
- *  de recomendación del Quiz cognitivo queda fuera del alcance de este ciclo. */
-const USUARIO_MOCK: Usuario = {
-  id: 1,
-  nombre: 'Pedro Acevedo',
-  email: 'pedro.acevedo@focusmind.pe',
-  perfilCognitivo: {
-    nivelEstres: 6,
-    calidadSueno: 7,
-    objetivoPrincipal: 'Mejorar la concentración',
-  },
-};
+interface AuthResponseDto {
+  usuario: UsuarioBackendDto;
+  accessToken: string;
+  refreshToken: string;
+}
+
+const CLAVES_ALMACENAMIENTO = {
+  ACCESS_TOKEN: 'fm_access_token',
+  REFRESH_TOKEN: 'fm_refresh_token',
+  USUARIO: 'fm_usuario',
+} as const;
 
 // ══════════════════════════════════════════════════════════════════
-//  HU-07 — Módulo de Autenticación: Login con Reactive Forms (Sprint 2)
-//  Gestiona la cookie de sesión (RFC 6265, Secure + SameSite=Strict)
-//  que habilita la visibilidad contextual del Navbar (HU-08) y el
-//  Route Guard del Dashboard / Checkout (HU-10 / HU-11).
+//  FocusMind S.A.C. — auth.service.ts
+//  HU-19: reemplaza la autenticación simulada (cookie + validación
+//  siempre exitosa) por llamadas HTTP reales a FocusMind.API (HU-14).
+//  La sesión ya no vive en una cookie (fm_sesion): los tokens JWT se
+//  guardan en localStorage y AuthInterceptor los inyecta en cada
+//  request saliente. sesionActiva/usuarioActual se mantienen como
+//  Signals para no romper la visibilidad contextual del Navbar (HU-08)
+//  ni el Route Guard de /dashboard y /checkout.
 // ══════════════════════════════════════════════════════════════════
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Signal de estado reactivo de sesión activa (HU-08): dispara la re-evaluación del Navbar sin recargar la SPA.
-  private readonly _sesionActiva = signal<boolean>(false);
-  readonly sesionActiva = this._sesionActiva.asReadonly();
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  // Computed Signal: deriva el usuario visible combinando el perfil mock con el email real de la cookie de sesión.
-  readonly usuarioActual = computed<Usuario | null>(() => {
-    if (!this._sesionActiva()) {
-      return null;
-    }
+  private readonly _usuarioActual = signal<Usuario | null>(this.leerUsuarioPersistido());
+  readonly usuarioActual = this._usuarioActual.asReadonly();
 
-    const sesion = this.cookieService.obtenerJSON<SesionPersistida>(FM_COOKIE_KEYS.SESION);
-    return { ...USUARIO_MOCK, email: sesion?.email ?? USUARIO_MOCK.email };
-  });
+  readonly sesionActiva = computed(() => this._usuarioActual() !== null);
 
-  constructor(private cookieService: CookieService) {
-    this._sesionActiva.set(this.cookieService.existe(FM_COOKIE_KEYS.SESION));
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap(respuesta => this.guardarSesion(respuesta)),
+      map(() => true),
+      catchError(() => of(false)),
+    );
   }
 
-  /**
-   * Autenticación simulada (HU-07): la verificación contra un servicio de negocio real
-   * queda diferida al Trabajo Final. Crea la cookie de sesión con vigencia de 1 día.
-   */
-  // Validación de negocio simulada: toda combinación de email/password no vacíos autentica con éxito.
-  login(email: string, password: string): boolean {
-    if (!email || !password) {
-      return false;
+  registrar(nombre: string, email: string, password: string): Observable<boolean> {
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/register`, { nombre, email, password }).pipe(
+      tap(respuesta => this.guardarSesion(respuesta)),
+      map(() => true),
+      catchError(() => of(false)),
+    );
+  }
+
+  // Usado únicamente por AuthInterceptor ante un 401 con refreshToken vigente.
+  refrescarToken(): Observable<string | null> {
+    const refreshToken = localStorage.getItem(CLAVES_ALMACENAMIENTO.REFRESH_TOKEN);
+    if (!refreshToken) {
+      return of(null);
     }
 
-    const sesion: SesionPersistida = { email, autenticadoEn: new Date().toISOString() };
-    this.cookieService.guardarJSON(FM_COOKIE_KEYS.SESION, sesion, { diasExpiracion: 1 });
-    this._sesionActiva.set(true);
-    return true;
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
+      tap(respuesta => this.guardarSesion(respuesta)),
+      map(respuesta => respuesta.accessToken),
+      catchError(() => {
+        this.logout();
+        return of(null);
+      }),
+    );
   }
 
   logout(): void {
-    this.cookieService.eliminar(FM_COOKIE_KEYS.SESION);
-    this._sesionActiva.set(false);
+    localStorage.removeItem(CLAVES_ALMACENAMIENTO.ACCESS_TOKEN);
+    localStorage.removeItem(CLAVES_ALMACENAMIENTO.REFRESH_TOKEN);
+    localStorage.removeItem(CLAVES_ALMACENAMIENTO.USUARIO);
+    this._usuarioActual.set(null);
   }
 
   estaAutenticado(): boolean {
-    return this.cookieService.existe(FM_COOKIE_KEYS.SESION);
+    return this.obtenerAccessToken() !== null;
+  }
+
+  obtenerAccessToken(): string | null {
+    return localStorage.getItem(CLAVES_ALMACENAMIENTO.ACCESS_TOKEN);
+  }
+
+  private guardarSesion(respuesta: AuthResponseDto): void {
+    const usuario: Usuario = {
+      id: respuesta.usuario.idUsuario,
+      nombre: respuesta.usuario.nombre,
+      email: respuesta.usuario.email,
+    };
+
+    localStorage.setItem(CLAVES_ALMACENAMIENTO.ACCESS_TOKEN, respuesta.accessToken);
+    localStorage.setItem(CLAVES_ALMACENAMIENTO.REFRESH_TOKEN, respuesta.refreshToken);
+    localStorage.setItem(CLAVES_ALMACENAMIENTO.USUARIO, JSON.stringify(usuario));
+    this._usuarioActual.set(usuario);
+  }
+
+  private leerUsuarioPersistido(): Usuario | null {
+    const crudo = localStorage.getItem(CLAVES_ALMACENAMIENTO.USUARIO);
+    if (!crudo) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(crudo) as Usuario;
+    } catch {
+      return null;
+    }
   }
 }

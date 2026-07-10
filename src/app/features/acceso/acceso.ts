@@ -6,9 +6,10 @@ import { AuthService } from '../../services/auth/auth';
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — acceso.component.ts
 //  HU-07: Módulo de Autenticación — Login con Reactive Forms (Sprint 2).
-//  Validación síncrona (email + password mín. 6 caracteres); al autenticar
-//  exitosamente invoca AuthService.login(), que crea la cookie de sesión
-//  (Secure, SameSite=Strict, 1 día) y redirige al Dashboard.
+//  HU-19: AuthService.login() ahora es una llamada HTTP real (POST
+//  /api/auth/login) — se suscribe al Observable en vez de leer un
+//  boolean síncrono; al autenticar exitosamente, AuthService ya dejó
+//  el JWT en localStorage y se redirige al Dashboard.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-acceso',
@@ -52,14 +53,14 @@ export class AccesoComponent {
     }
 
     const { email, password } = this.formulario.value;
-    const autenticado = this.authService.login(email, password);
+    this.authService.login(email, password).subscribe(autenticado => {
+      if (!autenticado) {
+        this.credencialesInvalidas = true;
+        return;
+      }
 
-    if (!autenticado) {
-      this.credencialesInvalidas = true;
-      return;
-    }
-
-    this.credencialesInvalidas = false;
-    this.router.navigate(['/dashboard']);
+      this.credencialesInvalidas = false;
+      this.router.navigate(['/dashboard']);
+    });
   }
 }

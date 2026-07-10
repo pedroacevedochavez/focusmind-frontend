@@ -12,7 +12,7 @@
         científica. Cada ficha indica su Registro Sanitario DIGESA/DIGEMID.
       </p>
       <p class="fm-catalogo__contador" role="status" aria-live="polite">
-        {{ productosFiltrados.length }} de {{ productos.length }} productos
+        {{ productosFiltrados().length }} de {{ productos().length }} productos
       </p>
     </header>
 
@@ -146,9 +146,9 @@
       ══════════════════════════════════════════════════════ -->
       <div class="fm-productos">
 
-        @if (productosFiltrados.length > 0) {
+        @if (productosFiltrados().length > 0) {
           <div class="fm-grid">
-            @for (producto of productosFiltrados; track producto.id) {
+            @for (producto of productosFiltrados(); track producto.id) {
               <a
                 class="fm-producto-card"
                 [routerLink]="['/catalogo', producto.id]"

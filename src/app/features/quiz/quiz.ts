@@ -3,12 +3,9 @@ import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DiagnosticoService } from '../../services/diagnostico/diagnostico';
-import { PRODUCTOS_MOCK } from '../../data/productos/productos';
-import {
-  ObjetivoCognitivo,
-  OBJETIVO_LABELS,
-  Producto,
-} from '../../models/producto/producto';
+import { ProductoService } from '../../services/producto/producto';
+import { ObjetivoCognitivo, OBJETIVO_LABELS } from '../../models/producto/producto';
+import { ProductoRecomendado } from '../../models/diagnostico/diagnostico';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — quiz.component.ts
@@ -17,13 +14,12 @@ import {
 //  ACCESIBILIDAD: ruta 100% pública (sin canActivate en app.routes.ts).
 //  El formulario se muestra siempre, esté o no autenticado el visitante.
 //
-//  COMPORTAMIENTO SEGÚN SESIÓN (cookie fm_sesion vía AuthService):
-//   • Con sesión activa: al finalizar, el resultado se persiste en el
-//     historial del usuario mediante DiagnosticoService (cookie de
-//     30 días), visible luego en el Dashboard.
-//   • Sin sesión activa: se muestra un banner invitando a iniciar
-//     sesión; el cuestionario se completa igual y las recomendaciones
-//     se calculan localmente, pero no se guardan en ningún perfil.
+//  HU-19: DiagnosticoService.procesar() llama a POST /api/diagnosticos
+//  (HU-16) SIEMPRE, con o sin sesión — el motor de recomendación corre
+//  en el backend en ambos casos. La decisión de persistir el resultado
+//  en RDS ya no la toma este componente (antes: `if (sesionActiva())`),
+//  la toma el backend según si detecta un JWT válido; el Frontend solo
+//  refleja `resultado.persistido` en el banner de confirmación.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-quiz',
@@ -37,6 +33,7 @@ export class QuizComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly diagnosticoService = inject(DiagnosticoService);
+  private readonly productoService = inject(ProductoService);
 
   /** Estado de sesión leído de la cookie — controla el banner y la persistencia. */
   readonly sesionActiva = this.authService.sesionActiva;
@@ -45,10 +42,8 @@ export class QuizComponent {
     (Object.entries(OBJETIVO_LABELS) as [ObjetivoCognitivo, string][])
       .map(([value, label]) => ({ value, label }));
 
-  /** Catálogo de alérgenos declarados en el repositorio Mock, para el Paso 3. */
-  readonly alergenosDisponibles: string[] = Array.from(
-    new Set(PRODUCTOS_MOCK.flatMap(producto => producto.alergenos)),
-  );
+  /** Catálogo de alérgenos declarados en el catálogo de productos, para el Paso 3. */
+  readonly alergenosDisponibles = signal<string[]>([]);
 
   readonly formulario: FormGroup = this.fb.group({
     nivelEstres:        [null, [Validators.required, Validators.min(1), Validators.max(10)]],
@@ -69,7 +64,11 @@ export class QuizComponent {
   readonly pasoActual = signal(1);
   readonly completado = signal(false);
   readonly guardadoEnHistorial = signal(false);
-  readonly recomendaciones = signal<Producto[]>([]);
+  readonly recomendaciones = signal<ProductoRecomendado[]>([]);
+
+  constructor() {
+    this.productoService.obtenerAlergenosUnicos().subscribe(alergenos => this.alergenosDisponibles.set(alergenos));
+  }
 
   // Solo marca error si el campo fue tocado (evita errores antes de interactuar).
   campoInvalido(nombre: string): boolean {
@@ -114,8 +113,8 @@ export class QuizComponent {
   }
 
   /**
-   * Procesa las respuestas con el motor de recomendación local y, solo si
-   * existe sesión activa, persiste el resultado en el historial del usuario.
+   * Envía las respuestas a POST /api/diagnosticos (HU-16): el motor de
+   * recomendación y la decisión de persistir corren en el backend.
    */
   finalizar(): void {
     if (this.formulario.invalid) {
@@ -127,30 +126,20 @@ export class QuizComponent {
     const objetivo: ObjetivoCognitivo = valores.objetivoPrincipal;
     const alergiasSeleccionadas: string[] = valores.alergias ?? [];
 
-    const recomendados = PRODUCTOS_MOCK
-      .filter(producto => producto.objetivo === objetivo)
-      .filter(producto => !producto.alergenos.some(alergeno => alergiasSeleccionadas.includes(alergeno)))
-      .slice(0, 3);
-
-    this.recomendaciones.set(recomendados);
-
-    if (this.sesionActiva()) {
-      this.diagnosticoService.registrar({
-        fecha:              new Date().toISOString(),
-        nivelEstres:        valores.nivelEstres,
-        calidadSueno:       valores.calidadSueno,
-        objetivoPrincipal:  objetivo,
+    this.diagnosticoService
+      .procesar({
+        nivelEstres: valores.nivelEstres,
+        calidadSueno: valores.calidadSueno,
+        objetivoPrincipal: objetivo,
         horasConcentracion: valores.horasConcentracion,
-        alergias:           alergiasSeleccionadas,
-        condicionMedica:    valores.condicionMedica ?? '',
-        recomendacionesIds: recomendados.map(producto => producto.id),
+        alergias: alergiasSeleccionadas,
+        condicionMedica: valores.condicionMedica ?? '',
+      })
+      .subscribe(resultado => {
+        this.recomendaciones.set(resultado.recomendaciones);
+        this.guardadoEnHistorial.set(resultado.persistido);
+        this.completado.set(true);
       });
-      this.guardadoEnHistorial.set(true);
-    } else {
-      this.guardadoEnHistorial.set(false);
-    }
-
-    this.completado.set(true);
   }
 
   reiniciar(): void {

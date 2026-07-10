@@ -1,12 +1,12 @@
-<section class="fm-acceso" aria-label="Página de acceso a FocusMind">
+<section class="fm-registro" aria-label="Página de registro de cuenta en FocusMind">
 
-  <!-- Orbes decorativos de fondo (coherentes con el hero) -->
-  <div class="fm-acceso__orb fm-acceso__orb--1" aria-hidden="true"></div>
-  <div class="fm-acceso__orb fm-acceso__orb--2" aria-hidden="true"></div>
-  <div class="fm-acceso__orb fm-acceso__orb--3" aria-hidden="true"></div>
+  <!-- Orbes decorativos de fondo (coherentes con el hero y el login) -->
+  <div class="fm-registro__orb fm-registro__orb--1" aria-hidden="true"></div>
+  <div class="fm-registro__orb fm-registro__orb--2" aria-hidden="true"></div>
+  <div class="fm-registro__orb fm-registro__orb--3" aria-hidden="true"></div>
 
-  <!-- ── TARJETA DE LOGIN ──────────────────────────────────────── -->
-  <div class="fm-login-card" role="main" aria-labelledby="login-titulo">
+  <!-- ── TARJETA DE REGISTRO ───────────────────────────────────── -->
+  <div class="fm-login-card" role="main" aria-labelledby="registro-titulo">
 
     <!-- Barra superior de acento degradado -->
     <div class="fm-login-card__accent-bar" aria-hidden="true"></div>
@@ -28,12 +28,12 @@
             Focus<span class="fm-login-card__brand-accent">Mind</span>
           </span>
         </a>
-        <h1 id="login-titulo" class="fm-login-card__title">Bienvenido de vuelta</h1>
-        <p class="fm-login-card__subtitle">Accede a tu panel cognitivo personalizado</p>
+        <h1 id="registro-titulo" class="fm-login-card__title">Crea tu cuenta</h1>
+        <p class="fm-login-card__subtitle">Únete a tu panel cognitivo personalizado</p>
       </header>
 
-      <!-- Alerta de credenciales inválidas -->
-      @if (credencialesInvalidas) {
+      <!-- Alerta de registro fallido -->
+      @if (registroFallido) {
         <div class="fm-login-card__alert" role="alert">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -41,7 +41,7 @@
             <line x1="12" y1="8" x2="12" y2="12"/>
             <line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          Correo o contraseña incorrectos. Inténtalo nuevamente.
+          No se pudo completar el registro. Verifica tus datos e inténtalo nuevamente.
         </div>
       }
 
@@ -49,10 +49,45 @@
       <form
         class="fm-login-card__form"
         [formGroup]="formulario"
-        (ngSubmit)="ingresar()"
-        aria-label="Formulario de inicio de sesión"
+        (ngSubmit)="registrar()"
+        aria-label="Formulario de registro de cuenta"
         novalidate
       >
+
+        <!-- Campo: Nombre completo -->
+        <div class="fm-login-card__field">
+          <label class="fm-login-card__label" for="campo-nombre">
+            <svg class="fm-login-card__field-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Nombre completo
+          </label>
+          <div class="fm-login-card__input-wrap">
+            <input
+              id="campo-nombre"
+              class="fm-login-card__input"
+              [class.fm-login-card__input--invalid]="campoInvalido('nombre')"
+              type="text"
+              formControlName="nombre"
+              placeholder="Nombre y apellido"
+              autocomplete="name"
+              [attr.aria-invalid]="campoInvalido('nombre')"
+              aria-describedby="error-nombre"
+            />
+          </div>
+          @if (campoInvalido('nombre')) {
+            <p id="error-nombre" class="fm-login-card__error" role="alert">
+              @if (formulario.get('nombre')?.errors?.['required']) {
+                Este campo es requerido.
+              } @else {
+                Ingresa al menos 3 caracteres.
+              }
+            </p>
+          }
+        </div>
 
         <!-- Campo: Correo electrónico -->
         <div class="fm-login-card__field">
@@ -108,7 +143,7 @@
               [type]="mostrarPassword ? 'text' : 'password'"
               formControlName="password"
               placeholder="••••••••••"
-              autocomplete="current-password"
+              autocomplete="new-password"
               [attr.aria-invalid]="campoInvalido('password')"
               aria-describedby="error-password"
             />
@@ -141,30 +176,65 @@
               @if (formulario.get('password')?.errors?.['required']) {
                 Este campo es requerido.
               } @else {
-                La contraseña debe tener al menos 6 caracteres.
+                La contraseña debe tener al menos 8 caracteres.
               }
             </p>
           }
-          <a href="#" class="fm-login-card__forgot">¿Olvidaste tu contraseña?</a>
         </div>
 
-        <!-- Botón Ingresar -->
+        <!-- Campo: Confirmar contraseña -->
+        <div class="fm-login-card__field">
+          <label class="fm-login-card__label" for="campo-confirmar-password">
+            <svg class="fm-login-card__field-icon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Confirmar contraseña
+          </label>
+          <div class="fm-login-card__input-wrap">
+            <input
+              id="campo-confirmar-password"
+              class="fm-login-card__input"
+              [class.fm-login-card__input--invalid]="campoInvalido('confirmarPassword') || passwordsNoCoinciden()"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              formControlName="confirmarPassword"
+              placeholder="••••••••••"
+              autocomplete="new-password"
+              [attr.aria-invalid]="campoInvalido('confirmarPassword') || passwordsNoCoinciden()"
+              aria-describedby="error-confirmar-password"
+            />
+          </div>
+          @if (campoInvalido('confirmarPassword')) {
+            <p id="error-confirmar-password" class="fm-login-card__error" role="alert">
+              Este campo es requerido.
+            </p>
+          } @else if (passwordsNoCoinciden()) {
+            <p id="error-confirmar-password" class="fm-login-card__error" role="alert">
+              Las contraseñas no coinciden.
+            </p>
+          }
+        </div>
+
+        <!-- Botón Registrarse -->
         <button type="submit" class="fm-login-card__btn">
           <svg class="fm-login-card__btn-icon" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                stroke-linejoin="round" aria-hidden="true">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-            <polyline points="10 17 15 12 10 7"/>
-            <line x1="15" y1="12" x2="3" y2="12"/>
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="8.5" cy="7" r="4"/>
+            <line x1="20" y1="8" x2="20" y2="14"/>
+            <line x1="17" y1="11" x2="23" y2="11"/>
           </svg>
-          Ingresar
+          Registrarse
         </button>
 
-        <!-- Acceso a registro -->
+        <!-- Acceso a login -->
         <div class="fm-login-card__register-cta">
-          <p class="fm-login-card__register-question">¿Aún no tienes cuenta?</p>
-          <a routerLink="/registro" class="fm-login-card__register-btn">
-            Registrarse
+          <p class="fm-login-card__register-question">¿Ya tienes una cuenta?</p>
+          <a routerLink="/acceso" class="fm-login-card__register-btn">
+            Iniciar sesión
           </a>
         </div>
 
@@ -187,4 +257,4 @@
     </div><!-- /.fm-login-card__inner -->
   </div><!-- /.fm-login-card -->
 
-</section><!-- /.fm-acceso -->
+</section><!-- /.fm-registro -->

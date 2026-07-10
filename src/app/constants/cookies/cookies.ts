@@ -1,8 +1,8 @@
-// Claves de los 5 dominios de persistencia en cookies (RFC 6265) descritos en la sección 2.3.1 del informe.
+// Claves de persistencia en cookies (RFC 6265). HU-19: fm_sesion, fm_historial_pedidos y
+// fm_historial_diagnosticos se retiraron — la sesión ahora vive en localStorage como JWT
+// (ver AuthService) y los historiales de pedidos/diagnósticos se leen en vivo desde el backend
+// real (PedidoService/DiagnosticoService), no desde una cookie local.
 export const FM_COOKIE_KEYS = {
-  SESION: 'fm_sesion',
   FILTROS_CATALOGO: 'fm_filtros_catalogo',
   CARRITO: 'fm_carrito',
-  HISTORIAL_PEDIDOS: 'fm_historial_pedidos',
-  HISTORIAL_DIAGNOSTICOS: 'fm_historial_diagnosticos',
 } as const;

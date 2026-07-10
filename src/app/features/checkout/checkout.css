@@ -1,7 +1,7 @@
 /* src/app/features/checkout/checkout.css
    ══════════════════════════════════════════════════════════════════
    FocusMind S.A.C. — checkout.css
-   US-10 (numeración del cliente) — Formulario de Simulación de Compra.
+   US-10 (numeración del cliente) — Formulario de Checkout.
    BEM + Design Tokens globales (definidos en app.css).
    ══════════════════════════════════════════════════════════════════ */
 
@@ -28,12 +28,6 @@
   color:          var(--fm-navy);
   letter-spacing: -0.025em;
   margin-bottom:  10px;
-}
-
-.fm-checkout__subtitle {
-  font-size:   0.9rem;
-  color:       var(--fm-text-muted);
-  line-height: 1.6;
 }
 
 .fm-checkout__layout {
@@ -144,6 +138,13 @@
   opacity:    0.88;
   transform:  translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 180, 216, 0.35);
+}
+
+.fm-checkout__btn-primario:disabled {
+  opacity:   0.60;
+  cursor:    not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .fm-checkout__btn-submit {

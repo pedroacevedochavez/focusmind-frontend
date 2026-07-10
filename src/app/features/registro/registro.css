@@ -1,14 +1,14 @@
 /* ══════════════════════════════════════════════════════════════════
-   FocusMind S.A.C. — acceso.css
-   Estilos del módulo de Autenticación | BEM
+   FocusMind S.A.C. — registro.css
+   Estilos del módulo de Registro de Cuenta | BEM
    Usa CSS Custom Properties definidas en :root (app.css)
    ══════════════════════════════════════════════════════════════════ */
 
 
 /* ════════════════════════════════════════════════════════════════
-   1. PÁGINA CONTENEDORA — .fm-acceso
+   1. PÁGINA CONTENEDORA — .fm-registro
    ════════════════════════════════════════════════════════════════ */
-.fm-acceso {
+.fm-registro {
   position:         relative;
   min-height:       calc(100vh - var(--fm-navbar-h));
   display:          flex;
@@ -20,7 +20,7 @@
   font-family:      var(--fm-font);
 }
 
-.fm-acceso__orb {
+.fm-registro__orb {
   position:       absolute;
   border-radius:  50%;
   pointer-events: none;
@@ -28,7 +28,7 @@
   opacity:        0.18;
 }
 
-.fm-acceso__orb--1 {
+.fm-registro__orb--1 {
   width:          500px;
   height:         500px;
   background:     radial-gradient(circle, #00B4D8, transparent 70%);
@@ -37,7 +37,7 @@
   animation:      fm-orb-pulse 8s ease-in-out infinite;
 }
 
-.fm-acceso__orb--2 {
+.fm-registro__orb--2 {
   width:          380px;
   height:         380px;
   background:     radial-gradient(circle, #0A9396, transparent 70%);
@@ -46,7 +46,7 @@
   animation:      fm-orb-pulse 10s ease-in-out infinite reverse;
 }
 
-.fm-acceso__orb--3 {
+.fm-registro__orb--3 {
   width:          200px;
   height:         200px;
   background:     radial-gradient(circle, #90E0EF, transparent 70%);
@@ -62,7 +62,7 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-   2. TARJETA DE LOGIN — .fm-login-card
+   2. TARJETA DE REGISTRO — .fm-login-card (mismo bloque visual que /acceso)
    ════════════════════════════════════════════════════════════════ */
 .fm-login-card {
   position:         relative;
@@ -146,7 +146,7 @@
   line-height:    1.5;
 }
 
-/* Alerta de credenciales inválidas */
+/* Alerta de registro fallido */
 .fm-login-card__alert {
   display:        flex;
   align-items:    flex-start;
@@ -210,7 +210,7 @@
   align-items:    center;
 }
 
-/* Input base (habilitado — US-07 Sprint 2) */
+/* Input base */
 .fm-login-card__input {
   width:          100%;
   height:         50px;
@@ -275,17 +275,7 @@
 
 .fm-login-card__toggle-pwd:hover { color: var(--fm-teal); }
 
-.fm-login-card__forgot {
-  font-size:      0.78rem;
-  color:          var(--fm-blue);
-  text-decoration: none;
-  text-align:     right;
-  transition:     color 0.20s;
-}
-
-.fm-login-card__forgot:hover { color: var(--fm-teal); text-decoration: underline; }
-
-/* Botón "Ingresar" */
+/* Botón "Registrarse" */
 .fm-login-card__btn {
   display:        flex;
   align-items:    center;
@@ -327,6 +317,7 @@
   pointer-events: none;
 }
 
+/* Fila independiente: pregunta + botón secundario (Iniciar sesión / Registrarse) */
 .fm-login-card__register-cta {
   display:        flex;
   flex-direction: column;
@@ -343,7 +334,6 @@
   line-height:    1.5;
 }
 
-/* Botón "Registrarse" — misma estética del botón "Ingresar", proporcionalmente menor */
 .fm-login-card__register-btn {
   display:        flex;
   align-items:    center;

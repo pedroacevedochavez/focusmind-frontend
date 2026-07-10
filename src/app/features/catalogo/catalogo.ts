@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -9,7 +9,7 @@ import {
   CATEGORIA_LABELS,
   OBJETIVO_LABELS,
 } from '../../models/producto/producto';
-import { PRODUCTOS_MOCK } from '../../data/productos/productos';
+import { ProductoService } from '../../services/producto/producto';
 import { CookieService } from '../../services/cookie/cookie';
 import { FM_COOKIE_KEYS } from '../../constants/cookies/cookies';
 
@@ -23,12 +23,13 @@ interface FiltrosCatalogoPersistidos {
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — catalogo.ts
 //  HU-03: Grid de productos + panel de filtros avanzados.
-//  HU-04: Motor de filtrado dinámico en memoria mediante Two-Way Data
-//         Binding ([(ngModel)] + getter productosFiltrados()).
+//  HU-04: Motor de filtrado dinámico mediante Two-Way Data Binding
+//         ([(ngModel)]) delegado a ProductoService.obtenerTodos(criterios),
+//         de forma que el filtrado pase a ser server-side (query params)
+//         el día que el catálogo se sirva desde un backend real.
 //  El estado de los 4 filtros se persiste en cookie (7 días) para
 //  sobrevivir recargas, conforme al servicio transversal de Cookies
 //  del informe FocusMind (sección 2.3.1).
-//  100% en memoria — sin peticiones HTTP. Mock: PRODUCTOS_MOCK.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector: 'app-catalogo',
@@ -39,8 +40,16 @@ interface FiltrosCatalogoPersistidos {
 })
 export class CatalogoComponent implements OnInit {
 
-  /** Catálogo completo en memoria (Sprint 1: datos mockeados). */
-  readonly productos: Producto[] = PRODUCTOS_MOCK;
+  private readonly productoService = inject(ProductoService);
+  private readonly cookieService = inject(CookieService);
+
+  /** Catálogo completo (sin filtrar), usado para el contador "X de Y productos". */
+  private readonly _productos = signal<Producto[]>([]);
+  readonly productos = this._productos.asReadonly();
+
+  /** Resultado vigente de aplicar los 4 filtros sobre el catálogo. */
+  private readonly _productosFiltrados = signal<Producto[]>([]);
+  readonly productosFiltrados = this._productosFiltrados.asReadonly();
 
   /** Opciones del selector de categoría, incluida la opción "Todas". */
   readonly categorias: { value: Categoria | ''; label: string }[] = [
@@ -61,15 +70,13 @@ export class CatalogoComponent implements OnInit {
   readonly precioMaximoAbsoluto = 200;
 
   // ── Estado de los filtros — vinculados con [(ngModel)] ────────────
-  // Backing fields privados: cada setter público persiste en cookie.
+  // Backing fields privados: cada setter público persiste en cookie y recalcula el resultado.
   private _busqueda = '';
   private _categoriaSeleccionada: Categoria | '' = '';
   private _objetivoSeleccionado: ObjetivoCognitivo | '' = '';
   private _precioMax = this.precioMaximoAbsoluto;
 
-  constructor(private cookieService: CookieService) {}
-
-  /** Restaura el estado de los filtros desde la cookie al cargar el catálogo. */
+  /** Restaura el estado de los filtros desde la cookie y carga el catálogo. */
   ngOnInit(): void {
     const filtrosGuardados = this.cookieService.obtenerJSON<FiltrosCatalogoPersistidos>(
       FM_COOKIE_KEYS.FILTROS_CATALOGO,
@@ -81,6 +88,9 @@ export class CatalogoComponent implements OnInit {
       this._objetivoSeleccionado = filtrosGuardados.objetivo ?? '';
       this._precioMax = filtrosGuardados.precioMax ?? this.precioMaximoAbsoluto;
     }
+
+    this.productoService.obtenerTodos().subscribe(productos => this._productos.set(productos));
+    this.actualizarProductosFiltrados();
   }
 
   get busqueda(): string {
@@ -90,6 +100,7 @@ export class CatalogoComponent implements OnInit {
   set busqueda(valor: string) {
     this._busqueda = valor;
     this.guardarFiltrosEnCookie();
+    this.actualizarProductosFiltrados();
   }
 
   get categoriaSeleccionada(): Categoria | '' {
@@ -99,6 +110,7 @@ export class CatalogoComponent implements OnInit {
   set categoriaSeleccionada(valor: Categoria | '') {
     this._categoriaSeleccionada = valor;
     this.guardarFiltrosEnCookie();
+    this.actualizarProductosFiltrados();
   }
 
   get objetivoSeleccionado(): ObjetivoCognitivo | '' {
@@ -108,6 +120,7 @@ export class CatalogoComponent implements OnInit {
   set objetivoSeleccionado(valor: ObjetivoCognitivo | '') {
     this._objetivoSeleccionado = valor;
     this.guardarFiltrosEnCookie();
+    this.actualizarProductosFiltrados();
   }
 
   get precioMax(): number {
@@ -119,37 +132,7 @@ export class CatalogoComponent implements OnInit {
     // se normaliza a number para mantener comparaciones numéricas correctas.
     this._precioMax = Number(valor);
     this.guardarFiltrosEnCookie();
-  }
-
-  /**
-   * Getter recalculado en cada ciclo de detección de cambios de Angular.
-   * Aplica los 4 filtros de forma acumulativa (AND lógico).
-   */
-  get productosFiltrados(): Producto[] {
-    const texto = this.busqueda.trim().toLowerCase();
-
-    return this.productos.filter(producto => {
-      const coincideTexto =
-        texto === '' ||
-        producto.nombre.toLowerCase().includes(texto) ||
-        producto.marca.toLowerCase().includes(texto) ||
-        producto.descripcion.toLowerCase().includes(texto) ||
-        producto.ingredientes.some(ingrediente =>
-          ingrediente.toLowerCase().includes(texto)
-        );
-
-      const coincideCategoria =
-        this.categoriaSeleccionada === '' ||
-        producto.categoria === this.categoriaSeleccionada;
-
-      const coincideObjetivo =
-        this.objetivoSeleccionado === '' ||
-        producto.objetivo === this.objetivoSeleccionado;
-
-      const coincidePrecio = producto.precio <= this.precioMax;
-
-      return coincideTexto && coincideCategoria && coincideObjetivo && coincidePrecio;
-    });
+    this.actualizarProductosFiltrados();
   }
 
   /** true si al menos un filtro tiene un valor distinto del valor por defecto. */
@@ -176,6 +159,18 @@ export class CatalogoComponent implements OnInit {
 
   obtenerLabelObjetivo(objetivo: ObjetivoCognitivo | ''): string {
     return objetivo ? OBJETIVO_LABELS[objetivo] : '';
+  }
+
+  /** Recalcula el resultado filtrado delegando los criterios a ProductoService. */
+  private actualizarProductosFiltrados(): void {
+    this.productoService
+      .obtenerTodos({
+        busqueda: this._busqueda,
+        categoria: this._categoriaSeleccionada,
+        objetivo: this._objetivoSeleccionado,
+        precioMax: this._precioMax,
+      })
+      .subscribe(productos => this._productosFiltrados.set(productos));
   }
 
   /** Persiste el estado completo de los 4 filtros en una cookie de 7 días. */

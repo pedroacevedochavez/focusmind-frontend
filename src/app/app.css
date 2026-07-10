@@ -271,6 +271,70 @@
   background:     rgba(0, 180, 216, 0.12) !important;
 }
 
+/* Carrito de compras (HU-11) */
+.fm-navbar__cart {
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  position:         relative;
+  width:            38px;
+  height:           38px;
+  padding:          0;
+  background:       transparent;
+  border:           1px solid rgba(0, 180, 216, 0.30);
+  border-radius:    var(--fm-radius-sm);
+  color:            rgba(144, 224, 239, 0.85);
+  text-decoration:  none;
+  cursor:           pointer;
+  flex-shrink:      0;
+  transition:       color 0.20s, border-color 0.20s, background 0.20s;
+}
+
+.fm-navbar__cart svg {
+  width:          18px;
+  height:         18px;
+  display:        block;
+  pointer-events: none;
+}
+
+.fm-navbar__cart:hover {
+  color:          #fff;
+  border-color:   rgba(0, 180, 216, 0.70);
+  background:     rgba(0, 180, 216, 0.10);
+}
+
+.fm-navbar__cart:focus-visible {
+  outline:        2px solid var(--fm-cyan);
+  outline-offset: 2px;
+}
+
+.fm-navbar__cart--active {
+  color:          var(--fm-cyan) !important;
+  border-color:   var(--fm-cyan) !important;
+  background:     rgba(0, 180, 216, 0.12) !important;
+}
+
+.fm-navbar__cart-badge {
+  position:         absolute;
+  top:              -6px;
+  right:            -6px;
+  min-width:        18px;
+  height:           18px;
+  padding:          0 4px;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  background:       #D64550;
+  color:            #fff;
+  font-size:        0.68rem;
+  font-weight:      700;
+  font-family:      var(--fm-font);
+  line-height:      1;
+  border-radius:    999px;
+  border:           1px solid rgba(10, 37, 64, 0.97);
+  pointer-events:   none;
+}
+
 /* Botón de Logout (US-07) */
 .fm-navbar__logout {
   display:          flex;
@@ -400,6 +464,27 @@
 
 .fm-navbar__mobile-link--login {
   color:          rgba(144, 224, 239, 0.80);
+}
+
+.fm-navbar__mobile-link--cart {
+  color:          rgba(144, 224, 239, 0.80);
+}
+
+.fm-navbar__mobile-badge {
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  min-width:        20px;
+  height:           20px;
+  padding:          0 6px;
+  margin-left:      auto;
+  background:       #D64550;
+  color:            #fff;
+  font-size:        0.72rem;
+  font-weight:      700;
+  line-height:      1;
+  border-radius:    999px;
+  pointer-events:   none;
 }
 
 .fm-navbar__mobile-link--logout {

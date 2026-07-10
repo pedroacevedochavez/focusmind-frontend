@@ -125,7 +125,7 @@
             <div class="fm-quiz__field">
               <label>Alergias alimentarias declaradas (opcional)</label>
               <div class="fm-quiz__chips">
-                @for (alergeno of alergenosDisponibles; track alergeno) {
+                @for (alergeno of alergenosDisponibles(); track alergeno) {
                   <button
                     type="button"
                     class="fm-quiz__chip"

@@ -10,12 +10,13 @@
 //    /catalogo/:id → Ficha de producto (DetalleComponent)
 //    /quiz      → Quiz cognitivo (QuizComponent)
 //    /acceso    → Módulo de autenticación (AccesoComponent)
-//    /checkout  → Simulación de compra (CheckoutComponent) — authGuard
+//    /registro  → Módulo de registro de cuenta (RegistroComponent)
+//    /checkout  → Checkout de compra (CheckoutComponent) — authGuard
 //    /**        → redirige a /home
 //
 //  ✔ Mapa de rutas MVP verificado: todas las rutas declaradas en minúsculas,
 //    sin alias duplicados ni rutas huérfanas (home, catalogo, catalogo/:id,
-//    acceso, dashboard, quiz, checkout).
+//    acceso, registro, dashboard, quiz, checkout).
 // ══════════════════════════════════════════════════════════════════
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth/auth';
@@ -81,6 +82,16 @@ export const routes: Routes = [
     title: 'FocusMind — Acceso',
   },
 
+  // ── /registro — Módulo de Registro de Cuenta ──────────────────────────
+  //    Alta de cuenta con Reactive Forms, autentica y crea cookie de sesión
+  {
+    path: 'registro',
+    loadComponent: () =>
+      import('./features/registro/registro')
+        .then(m => m.RegistroComponent),
+    title: 'FocusMind — Crear Cuenta',
+  },
+
   // ── /quiz — Quiz cognitivo con Reactive Forms ─────────────
   //    Apunta al componente actual
   {
@@ -91,7 +102,7 @@ export const routes: Routes = [
     title: 'FocusMind — Quiz de Diagnóstico Cognitivo',
   },
 
-  // ── /checkout — Formulario de Simulación de Compra ──────────────────────
+  // ── /checkout — Formulario de Checkout ───────────────────────────────────
   //    Protegido por authGuard: solo usuarios autenticados pueden pagar.
   {
     path: 'checkout',

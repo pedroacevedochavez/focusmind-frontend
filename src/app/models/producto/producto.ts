@@ -23,6 +23,10 @@ export interface Producto {
   categoria: Categoria;
   objetivo: ObjetivoCognitivo;
   precio: number;
+  // HU-19: GET /api/productos (listado) no incluye estos 4 campos — ProductoService los
+  // rellena con '' / [] al mapear la respuesta de listado; solo GET /api/productos/:id
+  // (ProductoDetalleResponseDto) los trae realmente poblados. Se mantienen no-opcionales
+  // aquí para no tener que tocar detalle.html con guardas adicionales.
   descripcion: string;
   ingredientes: string[];
   dosisRecomendada: string;
@@ -33,6 +37,8 @@ export interface Producto {
   registroSanitario: string | null;
   /** Entidad emisora del registro. null si registroSanitario es null. */
   entidadRegistro: EntidadRegistro | null;
+  /** Unidades disponibles (TM_PRODUCTO.STOCK) — HU-19, ver auditoría de inventario del backend. */
+  stock: number;
 }
 
 /** Etiquetas legibles para el selector de categoría del panel de filtros (HU-04). */

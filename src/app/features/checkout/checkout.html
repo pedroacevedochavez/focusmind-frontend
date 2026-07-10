@@ -3,7 +3,7 @@
 
     @if (pedidoConfirmado) {
 
-      <!-- ── Confirmación de compra simulada ─────────────────────── -->
+      <!-- ── Confirmación de compra ───────────────────────────────── -->
       <div class="fm-checkout__confirmacion" role="status" aria-live="polite">
         <div class="fm-checkout__confirmacion-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -12,11 +12,10 @@
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
-        <h1 class="fm-checkout__confirmacion-title">¡Compra simulada confirmada!</h1>
+        <h1 class="fm-checkout__confirmacion-title">¡Compra confirmada!</h1>
         <p class="fm-checkout__confirmacion-desc">
           Tu pedido <strong>{{ numeroPedidoConfirmado }}</strong> ha sido registrado en tu
-          historial. En el Trabajo Final esta simulación se conectará al servicio real
-          de procesamiento de pagos.
+          historial.
         </p>
         <button type="button" class="fm-checkout__btn-primario" (click)="volverAlDashboard()">
           Ver mi historial en el Dashboard
@@ -42,11 +41,7 @@
 
       <header class="fm-checkout__header">
         <span class="fm-section-label">Finalizar Compra</span>
-        <h1 id="checkout-titulo" class="fm-checkout__title">Simulación de Compra</h1>
-        <p class="fm-checkout__subtitle">
-          Este es un flujo de Checkout simulado (Sprint 2). La integración con una
-          pasarela de pago real queda diferida al Trabajo Final.
-        </p>
+        <h1 id="checkout-titulo" class="fm-checkout__title">Completa tu pedido</h1>
       </header>
 
       <div class="fm-checkout__layout">
@@ -108,7 +103,7 @@
 
           @if (metodoPagoEsTarjeta) {
             <div class="fm-checkout__field">
-              <label for="co-tarjeta">Número de tarjeta (simulado)</label>
+              <label for="co-tarjeta">Número de tarjeta</label>
               <input id="co-tarjeta" type="text" formControlName="numeroTarjeta"
                      placeholder="16 dígitos" maxlength="16"
                      [class.fm-checkout__input--invalid]="campoInvalido('numeroTarjeta')" />
@@ -118,8 +113,12 @@
             </div>
           }
 
-          <button type="submit" class="fm-checkout__btn-primario fm-checkout__btn-submit">
-            Confirmar compra (simulada)
+          @if (errorCheckout) {
+            <p class="fm-checkout__error" role="alert">{{ errorCheckout }}</p>
+          }
+
+          <button type="submit" class="fm-checkout__btn-primario fm-checkout__btn-submit" [disabled]="procesandoPago">
+            {{ procesandoPago ? 'Procesando...' : 'Confirmar compra' }}
           </button>
         </form>
 

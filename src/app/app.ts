@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './services/auth/auth';
+import { CartService } from './services/cart/cart';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — app.ts (Componente Raíz)
@@ -25,10 +26,14 @@ export class App {
   mobileMenuOpen = false;
 
   private readonly authService = inject(AuthService);
+  private readonly cartService = inject(CartService);
   private readonly router = inject(Router);
 
   readonly sesionActiva = this.authService.sesionActiva;
   readonly usuarioActual = this.authService.usuarioActual;
+
+  // HU-11 — Contador reactivo del carrito, consumido por el badge de la navbar.
+  readonly cantidadCarrito = this.cartService.cantidadTotal;
 
   toggleMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;

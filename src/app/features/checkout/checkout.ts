@@ -1,19 +1,26 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../services/cart/cart';
 import { PedidoService } from '../../services/pedido/pedido';
-import { ItemCarrito, Pedido } from '../../models/pedido/pedido';
+import { PaymentService } from '../../services/payment/payment';
+import { ItemCarrito, PedidoEntrada } from '../../models/pedido/pedido';
 
 // ══════════════════════════════════════════════════════════════════
 //  FocusMind S.A.C. — checkout.component.ts
-//  HU-11: Carrito de Compras y Simulación de Checkout. Reactive Forms
-//  con validador condicional dinámico sobre el número de tarjeta según
-//  el método de pago. Al confirmar: registra el pedido vía PedidoService
-//  (cookie de historial, 30 días), vacía el carrito (CartService) y
-//  muestra la confirmación con el número de pedido generado.
+//  HU-11: Carrito de Compras y Checkout. Reactive Forms con validador
+//  condicional dinámico sobre el número de tarjeta según el método de
+//  pago.
+//  HU-19: PaymentService sigue simulado (no existe todavía HU de
+//  pasarela de pago real — ver nota en payment.service.ts). Al recibir
+//  su transaccionId simulado, se confirma el pedido de verdad contra
+//  POST /api/pedidos (HU-18, transacción ACID con descuento de stock).
+//  Si el backend rechaza el pedido (stock insuficiente, producto ya no
+//  disponible, número de pedido duplicado), se muestra el motivo en
+//  vez de fallar en silencio.
 // ══════════════════════════════════════════════════════════════════
 @Component({
   selector:    'app-checkout',
@@ -28,12 +35,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   pedidoConfirmado = false;
   numeroPedidoConfirmado = '';
+  procesandoPago = false;
+  errorCheckout: string | null = null;
 
   private suscripcionMetodoPago?: Subscription;
 
   private readonly fb = inject(FormBuilder);
   private readonly cartService = inject(CartService);
   private readonly pedidoService = inject(PedidoService);
+  private readonly paymentService = inject(PaymentService);
   private readonly router = inject(Router);
 
   constructor() {
@@ -124,23 +134,62 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     const valores = this.formulario.value;
 
-    const pedido: Pedido = {
-      id:            `FM-${Date.now()}`,
-      fecha:         new Date().toISOString(),
-      items:         this.items,
-      total:         this.montoTotal,
-      direccionEnvio: `${valores.direccion}, ${valores.ciudad}`,
-      metodoPago:    valores.metodoPago,
-    };
+    this.procesandoPago = true;
+    this.errorCheckout = null;
 
-    this.pedidoService.registrar(pedido);
-    this.cartService.vaciar();
+    this.paymentService
+      .procesarPago({
+        monto:         this.montoTotal,
+        metodoPago:    valores.metodoPago,
+        numeroTarjeta: valores.numeroTarjeta,
+        cliente: {
+          nombreCompleto: valores.nombreCompleto,
+          direccion:      valores.direccion,
+          ciudad:         valores.ciudad,
+          telefono:       valores.telefono,
+        },
+      })
+      .subscribe(respuesta => {
+        if (!respuesta.exito) {
+          this.procesandoPago = false;
+          this.errorCheckout = 'No se pudo procesar el pago. Intenta nuevamente.';
+          return;
+        }
 
-    this.pedidoConfirmado = true;
-    this.numeroPedidoConfirmado = pedido.id;
+        const entrada: PedidoEntrada = {
+          numeroPedido:     respuesta.transaccionId,
+          nombreCliente:    valores.nombreCompleto,
+          direccionEnvio:   valores.direccion,
+          ciudadEnvio:      valores.ciudad,
+          telefonoContacto: valores.telefono,
+          metodoPago:       valores.metodoPago,
+          numeroTarjeta:    valores.numeroTarjeta,
+          items: this.items.map(item => ({ idProducto: item.productoId, cantidad: item.cantidad })),
+        };
+
+        this.pedidoService.confirmar(entrada).subscribe({
+          next: pedido => {
+            this.procesandoPago = false;
+            this.cartService.vaciar();
+            this.pedidoConfirmado = true;
+            this.numeroPedidoConfirmado = pedido.id;
+          },
+          error: (error: unknown) => {
+            this.procesandoPago = false;
+            this.errorCheckout = this.extraerMensajeError(error);
+          },
+        });
+      });
   }
 
   volverAlDashboard(): void {
     this.router.navigate(['/dashboard']);
+  }
+
+  private extraerMensajeError(error: unknown): string {
+    if (error instanceof HttpErrorResponse && typeof error.error?.error === 'string') {
+      return error.error.error;
+    }
+    return 'No se pudo confirmar el pedido. Intenta nuevamente.';
   }
 }

@@ -1,4 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -6,10 +7,13 @@ import {
 } from '@angular/router';
 
 import { routes } from './app.routes';
+import { authInterceptor } from './interceptors/auth/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    // HU-19: HttpClient real hacia FocusMind.API, con el interceptor que inyecta el JWT.
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(
       routes,
       withComponentInputBinding(),

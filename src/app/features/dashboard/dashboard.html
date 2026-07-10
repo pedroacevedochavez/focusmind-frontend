@@ -170,8 +170,7 @@
               <li class="fm-panel-card__list-item">
                 <span class="fm-panel-card__list-fecha">{{ pedido.id }}</span>
                 <span class="fm-panel-card__list-detalle">
-                  S/ {{ pedido.total.toFixed(2) }} · {{ pedido.items.length }} producto(s)
-                  · {{ pedido.metodoPago }}
+                  S/ {{ pedido.total.toFixed(2) }} · {{ pedido.metodoPago }}
                 </span>
               </li>
             }
@@ -184,7 +183,7 @@
         }
       </section>
 
-      <!-- ── Recomendaciones ───────────────────────────────────────── -->
+      <!-- ── Recomendaciones (ligadas al último diagnóstico, HU-19) ── -->
       <section class="fm-panel-card fm-panel-card--wide" aria-labelledby="recomendaciones-titulo">
         <h2 id="recomendaciones-titulo" class="fm-panel-card__title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -193,14 +192,21 @@
           </svg>
           Mis Recomendaciones
         </h2>
-        <div class="fm-panel-card__reco-grid">
-          @for (producto of recomendaciones; track producto.id) {
-            <a [routerLink]="['/catalogo', producto.id]" class="fm-reco-card">
-              <span class="fm-reco-card__nombre">{{ producto.nombre }}</span>
-              <span class="fm-reco-card__precio">S/ {{ producto.precio.toFixed(2) }}</span>
-            </a>
-          }
-        </div>
+        @if (recomendaciones().length > 0) {
+          <div class="fm-panel-card__reco-grid">
+            @for (producto of recomendaciones(); track producto.id) {
+              <a [routerLink]="['/catalogo', producto.id]" class="fm-reco-card">
+                <span class="fm-reco-card__nombre">{{ producto.nombre }}</span>
+                <span class="fm-reco-card__precio">S/ {{ producto.precio.toFixed(2) }}</span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="fm-panel-card__empty">
+            Completa el <a routerLink="/quiz">Quiz Cognitivo</a> para recibir recomendaciones
+            personalizadas según tu perfil.
+          </p>
+        }
       </section>
 
     </div><!-- /.fm-dashboard-panel__grid -->

@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto, CATEGORIA_LABELS } from '../../../models/producto/producto';
-import { PRODUCTOS_MOCK } from '../../../data/productos/productos';
+import { ProductoService } from '../../../services/producto/producto';
 import { CartService } from '../../../services/cart/cart';
 import { AuthService } from '../../../services/auth/auth';
 
@@ -25,8 +25,8 @@ import { AuthService } from '../../../services/auth/auth';
   templateUrl: './detalle.html',
   styleUrl:    './detalle.css',
 })
-export class DetalleComponent {
-  cargando = false;
+export class DetalleComponent implements OnInit {
+  cargando = true;
   noEncontrado = false;
   id: string | null = null;
   producto?: Producto;
@@ -35,15 +35,35 @@ export class DetalleComponent {
   confirmacionCompraRiesgo = signal(false);
   agregadoAlCarrito = signal(false);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private cartService: CartService,
-    private authService: AuthService,
-  ) {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
+  private readonly productoService = inject(ProductoService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.producto = PRODUCTOS_MOCK.find(p => p.id === Number(this.id));
-    this.noEncontrado = !this.producto;
+
+    this.productoService.obtenerPorId(Number(this.id)).subscribe({
+      next: producto => {
+        this.producto = producto;
+        this.noEncontrado = !producto;
+        this.cargando = false;
+        // Zone.js no siempre detecta este cambio de estado por su cuenta dentro del callback
+        // de subscribe (confirmado en depuración: sin esto, la vista quedaba congelada en
+        // "Cargando..." pese a que el dato ya había llegado) — se fuerza explícitamente.
+        this.cdr.detectChanges();
+      },
+      // Defensa adicional: con el catchError ya agregado en ProductoService.obtenerPorId este
+      // camino no debería dispararse, pero sin un handler de error aquí, una falla no
+      // capturada dejaba "Cargando..." para siempre en vez de mostrar "no encontrado".
+      error: () => {
+        this.noEncontrado = true;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   get categoriaLabel(): string {
