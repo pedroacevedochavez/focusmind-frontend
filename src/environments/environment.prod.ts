@@ -2,5 +2,5 @@
 // No usar en producción real hasta reemplazar apiUrl por el dominio desplegado.
 export const environment = {
   production: true,
-  apiUrl: 'http://focusmind-api-env.eba-82ndz2af.us-east-1.elasticbeanstalk.com',
+  apiUrl: 'http://focusmind-api-env.eba-82ndz2af.us-east-1.elasticbeanstalk.com/api/',
 };
