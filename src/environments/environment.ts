@@ -4,5 +4,5 @@
 // en el backend. No se configura ningún entorno de nube todavía (ver environment.prod.ts).
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5064/api',
+  apiUrl: 'http://focusmind-api-env.eba-82ndz2af.us-east-1.elasticbeanstalk.com',
 };
